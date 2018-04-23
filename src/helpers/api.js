@@ -1,7 +1,9 @@
 import { AsyncStorage } from 'react-native'
+import axios from 'axios'
 
 class Api {
-  baseUrl = 'http://192.168.11.103:7300/'
+  baseUrl = 'http://192.168.0.80:7300/'
+  request = undefined
 
   constructor() {
     if (process.env.REACT_APP_ENV === 'production') {
@@ -9,35 +11,33 @@ class Api {
     }
   }
 
-  async get(url) {
+  async init() {
     const token = await AsyncStorage.getItem('token')
+    this.request = axios.create({
+      baseURL: this.baseUrl,
+      timeout: 2000,
+      headers: {'Authorization': `Bearer ${token}`}
+    });
+  }
 
-    return await request.get(this.baseUrl+url)
-      .set('Authorization', `Bearer ${token}`)
+  async get(url) {
+    await this.init()
+    return await this.request.get(url)
   }
 
   async delete(url) {
-    const token = await AsyncStorage.getItem('token')
-
-    return await request.delete(this.baseUrl+url)
-      .set('Authorization', `Bearer ${token}`)
+    await this.init()
+    return await this.request.delete(url)
   }
 
   async post(url, data) {
-    const token = await AsyncStorage.getItem('token')
-
-    return await fetch(this.baseUrl+url, {
-      method: 'POST',
-      headers: {'Authorization': `Bearer ${token}`},
-      body: JSON.stringify(data)
-    })
+    await this.init()
+    return await this.request.post(url, data)
   }
 
   async put(url, data) {
-    const token = await AsyncStorage.getItem('token')
-
-    return await request.put(this.baseUrl+url).send(data)
-      .set('Authorization', `Bearer ${token}`)
+    await this.init()
+    return await this.request.put(turl, data)
   }
 }
 

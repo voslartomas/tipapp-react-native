@@ -11,6 +11,7 @@ export default class App extends React.Component {
 
     this.state = {
       action: undefined,
+      isLoggedIn: false
     }
   }
 
@@ -18,14 +19,26 @@ export default class App extends React.Component {
     this.setState({ action: 'login' })
   }
 
-  logout() {
+  async logout() {
     console.log('loging out')
     try {
-      AsyncStorage.setItem('token', '')
+      await AsyncStorage.setItem('token', '')
     } catch (error) {
-
+      console.log(error)
     }
     this.setState({ action: 'logout' })
+  }
+
+  componentDidMount() {
+    AsyncStorage.getItem('token') && AsyncStorage.getItem('token').then(token => {
+      this.setState({
+        isLoggedIn: token && token.length > 0
+      })
+    })
+  }
+
+  componentWillUpdate(nextProps, nextState) {
+    
   }
 
   setUser(user) {
@@ -35,7 +48,7 @@ export default class App extends React.Component {
   }
 
   render() {
-    const isLoggedIn = AsyncStorage.getItem('token') && AsyncStorage.getItem('token').length > 0;
+    const {isLoggedIn} = this.state
 
     return (
       <View>

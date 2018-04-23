@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import { View, Text } from 'react-native';
+import { View, Text, Button } from 'react-native';
+import MatchService from '../services/match.service'
 
 export default class SecuredComponent extends Component {
 
@@ -8,22 +9,24 @@ export default class SecuredComponent extends Component {
 
     this.state = {
       fontLoaded: false,
+      matches: []
     }
   }
 
   async componentDidMount() {
-    await Font.loadAsync({
-      'Roboto': require('native-base/Fonts/Roboto.ttf'),
-      'Roboto_medium': require('native-base/Fonts/Roboto_medium.ttf'),
-    });
-
-    this.setState({ fontLoaded: true });
+    const matches = await MatchService.getMatches(1)
+    this.setState({ fontLoaded: true, matches });
   }
 
   render() {
+    console.log(this.state.matches)
     return (
       <View>
         <Text>HELLO</Text>
+        <Button onPress={this.props.logout} title="Odhlasit se">Logout</Button>
+        {this.state.matches.map(match => (
+          <Text>{match.homeTeam.team.name}:{match.awayTeam.team.name}</Text>
+        ))}
       </View>
     );
   }

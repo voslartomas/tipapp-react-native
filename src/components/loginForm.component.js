@@ -8,8 +8,11 @@ export default class LoginFormComponent extends Component {
     super(props)
 
     this.state = {
-      username: '',
-      password: '',
+      user: {
+        username: '',
+        password: '',
+      },
+      error: '',
       loading: true,
     }
   }
@@ -19,23 +22,19 @@ export default class LoginFormComponent extends Component {
   }
 
   async logIn() {
+    let response = undefined
     try {
       this.setState({loading: true})
-      console.log('logingin...')
-      const response = await api.post('login', this.state);
-      console.log('res', response)
-      const token = response ? response.text : '';
-      console.log(response);
+      response = await api.post('login', this.state.user);
+      const token = response ? response.data : '';
 
       await AsyncStorage.setItem('token', token);
 
       this.props.login()
-      this.setState({loading: false})
-      console.log('loaded')
     } catch (e) {
-      console.log(e)
+      this.setState({error: 'spatny login...'})
     } finally {
-
+      this.setState({loading: false})
     }
 
   }
@@ -51,12 +50,13 @@ export default class LoginFormComponent extends Component {
     return (
       <View id="kok">
         <Header/>
+        <Text>{this.state.error}</Text>
         <Form>
           <Item>
-            <Input placeholder="Username" value={this.state.username} onChange={event => this.setState({ username: event.target.value })}/>
+            <Input placeholder="Username" onChangeText={(text) => this.setState({ user: {...this.state.user, username: text} })}/>
           </Item>
           <Item last>
-            <Input placeholder="Password" value={this.state.password} onChange={event => this.setState({ password: event.target.value })}/>
+            <Input placeholder="Password" onChangeText={(text) => this.setState({ user: {...this.state.user, password: text} })}/>
           </Item>
           <Item>
           <Button onPress={() => this.logIn()}><Text>Přihlásit se</Text></Button>
