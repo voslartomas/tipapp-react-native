@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import api from '../helpers/api';
-import { View, AsyncStorage, ActivityIndicator } from 'react-native';
-import { Container, Header, Content, Form, Item, Input, Button, Text, Root } from 'native-base';
+import { View, AsyncStorage, ActivityIndicator, StyleSheet } from 'react-native';
+import { Container, Header, Content, Form, Item, Input, Button, Text, Root, Title, Body } from 'native-base';
 
 export default class LoginFormComponent extends Component {
   constructor(props) {
@@ -48,23 +48,27 @@ export default class LoginFormComponent extends Component {
       );
     }
     return (
-      <View id="kok">
-        <Header/>
+      <View id="1">
+        <Header>
+        <Body><Title>NEYMAR</Title></Body>
+        </Header>
         <Text>{this.state.error}</Text>
         <Form>
           <Item>
-            <Input placeholder="Username" onChangeText={(text) => this.setState({ user: {...this.state.user, username: text} })}/>
+            <Input placeholder="Přihlašovací jméno" onChangeText={(text) => this.setState({ user: {...this.state.user, username: text} })} autoCapitalize="none" autoCorrect={false}/>
           </Item>
           <Item last>
-            <Input placeholder="Password" onChangeText={(text) => this.setState({ user: {...this.state.user, password: text} })}/>
+            <Input placeholder="Heslo" onChangeText={(text) => this.setState({ user: {...this.state.user, password: text} })} autoCapitalize="none" autoCorrect={false} secureTextEntry={true}/>
           </Item>
           <Item>
           <Button onPress={() => this.logIn()}><Text>Přihlásit se</Text></Button>
           </Item>
         </Form>
       </View>
-
     )
   }
-
 }
+
+const styles = StyleSheet.create({
+  
+})
