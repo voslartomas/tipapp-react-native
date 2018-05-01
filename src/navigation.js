@@ -5,6 +5,7 @@ import SecuredComponent from './components/secured.component';
 import {
   StackNavigator,
 } from 'react-navigation';
+import Button from 'react-native';
 
 export default createNavigation = (isLoggedIn, login, logout) =>  {
   const SignedOut = StackNavigator({
@@ -27,7 +28,17 @@ export default createNavigation = (isLoggedIn, login, logout) =>  {
 
   const SignedIn = StackNavigator({
     Home: {
-      screen: props => <SecuredComponent {...props} logout={logout} />
+      screen: props => <SecuredComponent {...props} logout={logout} />,
+      navigationOptions: {
+        title: 'NEYMAR',
+        headerRight: (
+          <Button
+            onPress={() => alert('This is a button!')}
+            title="Info"
+            color="#fff"
+          />
+        ),
+      },
     }
   })
 
