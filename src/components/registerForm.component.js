@@ -25,12 +25,12 @@ export default class RegisterFormComponent extends Component {
             source={{uri: 'http://neymar.cz/files/img/logo_PravaPlatiRotak2.png'}}
           />
         </View>
-        <TextInput value={this.state.user.firstName} placeholder="Křestní jméno" onChangeText={(text) => this.setState({ user: {...this.state.user, firstName: event.target.value }})} autoCapitalize="words" autoCorrect={false}/>
-        <TextInput value={this.state.user.lastName} placeholder="Příjmení" onChangeText={(text) => this.setState({ user: {...this.state.user, lastName: event.target.value }})} autoCapitalize="words" autoCorrect={false}/>
-        <TextInput value={this.state.user.email} placeholder="E-Mail" onChangeText={(text) => this.setState({ user: {...this.state.user, email: event.target.value }})} autoCapitalize="none" autoCorrect={false}/>
-        <TextInput value={this.state.user.mobileNumber} placeholder="Telefonní číslo" onChangeText={(text) => this.setState({ user: {...this.state.user, mobileNumber: event.target.value }})} autoCapitalize="none" autoCorrect={false}/>
-        <TextInput value={this.state.user.username} placeholder="Přihlašovací jméno" onChangeText={(text) => this.setState({ user: {...this.state.user, username: event.target.value }})} autoCapitalize="none" autoCorrect={false}/>
-        <TextInput value={this.state.user.password} placeholder="Heslo" onChangeText={(text) => this.setState({ user: {...this.state.user, password: event.target.value }})} autoCapitalize="none" autoCorrect={false} secureTextEntry={true}/>
+        <TextInput value={this.state.user.firstName} placeholder="Křestní jméno" onChangeText={(text) => this.setState({ user: {...this.state.user, firstName: text }})} autoCapitalize="words" autoCorrect={false}/>
+        <TextInput value={this.state.user.lastName} placeholder="Příjmení" onChangeText={(text) => this.setState({ user: {...this.state.user, lastName: text }})} autoCapitalize="words" autoCorrect={false}/>
+        <TextInput value={this.state.user.email} placeholder="E-Mail" onChangeText={(text) => this.setState({ user: {...this.state.user, email: text }})} autoCapitalize="none" autoCorrect={false}/>
+        <TextInput value={this.state.user.mobileNumber} placeholder="Telefonní číslo" onChangeText={(text) => this.setState({ user: {...this.state.user, mobileNumber: text }})} autoCapitalize="none" autoCorrect={false}/>
+        <TextInput value={this.state.user.username} placeholder="Přihlašovací jméno" onChangeText={(text) => this.setState({ user: {...this.state.user, username: text }})} autoCapitalize="none" autoCorrect={false}/>
+        <TextInput value={this.state.user.password} placeholder="Heslo" onChangeText={(text) => this.setState({ user: {...this.state.user, password: text }})} autoCapitalize="none" autoCorrect={false} secureTextEntry={true}/>
         <Button onPress={() => this.register()} backgroundColor="#291720" title="Registrovat se"></Button>
         <Button onPress={() => { this.props.navigation.goBack() } } backgroundColor="#291720" title="Prihlasit"></Button>
       </View>
