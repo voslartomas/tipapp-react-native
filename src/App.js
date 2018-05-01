@@ -15,7 +15,7 @@ export default class App extends React.Component {
   }
 
   login() {
-    this.setState({ action: 'login' })
+    this.setState({ action: 'login', isLoggedIn: true })
   }
 
   async logout() {
@@ -25,7 +25,7 @@ export default class App extends React.Component {
     } catch (error) {
       console.log(error)
     }
-    this.setState({ action: 'logout' })
+    this.setState({ action: 'logout', isLoggedIn: false })
   }
 
   componentDidMount() {
@@ -37,7 +37,7 @@ export default class App extends React.Component {
   }
 
   componentWillUpdate(nextProps, nextState) {
-    
+
   }
 
   setUser(user) {
