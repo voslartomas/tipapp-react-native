@@ -34,7 +34,7 @@ export default class App extends React.Component {
       })
     })
   }
-  
+
   setUser(user) {
     this.setState({
       user,

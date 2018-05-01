@@ -6,22 +6,26 @@ import { Text, Button, Card } from 'react-native-elements';
 export default class MainComponent extends Component {
     constructor(props) {
       super(props)
-  
+
       this.state = {
         matches: []
       }
     }
-  
+
     async componentDidMount() {
       const matches = await MatchService.getMatches(1)
       this.setState({ matches });
+
+      if (this.props.redirectLogout) {
+        this.props.logout()
+      }
     }
 
     render() {
-      console.log(this.state.matches)
       return (
         <View>
-          <Button onPress={this.props.logout} backgroundColor="#291720" title="Odhlasit se">Odhlasit se</Button>
+          <Button onPress={this.props.logout} backgroundColor="#291720" title="Odhlasit se" />
+          <Text>`Liga cislo: {this.props.leagueId}`</Text>
         </View>
       );
     }
