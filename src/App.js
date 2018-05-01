@@ -1,7 +1,6 @@
 import React from 'react';
 import LoginFormComponent from './components/loginForm.component';
 import SecuredComponent from './components/secured.component';
-
 import { View, AsyncStorage } from 'react-native';
 
 export default class App extends React.Component {

@@ -1,8 +1,8 @@
-import React, { Component } from 'react'
-import { View } from 'react-native';
-import MatchService from '../services/match.service'
-import { Container, Header, Content, Form, Item, Input, Root, Title, Text, Body, Left, Right, Icon, Button, Card, CardItem } from 'native-base';
-
+import React, { Component } from 'react';
+import { View, ScrollView, Dimensions } from 'react-native';
+import MatchService from '../services/match.service';
+import { Text, Button, Card } from 'react-native-elements';
+ 
 export default class SecuredComponent extends Component {
   constructor(props) {
     super(props)
@@ -21,15 +21,15 @@ export default class SecuredComponent extends Component {
   render() {
     console.log(this.state.matches)
     return (
-      <View>
-        <Header>
-          <Body><Title>NEYMAR</Title></Body>
-          <Right><Button onPress={this.props.logout} iconRight transparent><Text>ODHLÁSIT SE</Text><Icon type="FontAwesome" name='sign-out' /></Button></Right>
-        </Header>
-        <Text>Hello</Text>
+      <View style={{marginBottom: 90}}>
+        <Button onPress={this.props.logout} title="Odhlásit se"/>
+        <ScrollView>
         {this.state.matches.map(match => (
-          <Text>{match.homeTeam.team.name}:{match.awayTeam.team.name}</Text>
+          <Card title={match.homeTeam.team.name + ' : ' + match.awayTeam.team.name}>
+          
+          </Card>
         ))}
+        </ScrollView>
       </View>
     );
   }
