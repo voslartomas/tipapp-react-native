@@ -14,6 +14,8 @@ export default class RegisterFormComponent extends Component {
 
   async register() {
     RegisterService.register(this.state.user)
+
+    this.props.navigation.goBack()
   }
 
   render() {

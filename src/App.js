@@ -46,6 +46,8 @@ export default class App extends React.Component {
 
     const Layout = createNavigation(isLoggedIn, () => {this.login()}, () => {this.logout()})
 
+    console.disableYellowBox = true;
+
     return (
       <Layout />
     );
