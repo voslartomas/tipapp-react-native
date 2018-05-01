@@ -34,11 +34,7 @@ export default class App extends React.Component {
       })
     })
   }
-
-  componentWillUpdate(nextProps, nextState) {
-
-  }
-
+  
   setUser(user) {
     this.setState({
       user,
@@ -51,9 +47,7 @@ export default class App extends React.Component {
     const Layout = createNavigation(isLoggedIn, () => {this.login()}, () => {this.logout()})
 
     return (
-      <View>
-        <Layout />
-      </View>
+      <Layout />
     );
   }
 }

@@ -8,28 +8,20 @@ export default class SecuredComponent extends Component {
     super(props)
 
     this.state = {
-      fontLoaded: false,
       matches: []
     }
   }
 
   async componentDidMount() {
     const matches = await MatchService.getMatches(1)
-    this.setState({ fontLoaded: true, matches });
+    this.setState({ matches });
   }
 
   render() {
     console.log(this.state.matches)
     return (
-      <View style={{marginTop: 60, marginBottom: 90}}>
-        <Button onPress={this.props.logout} title="Odhlásit se"/>
-        <ScrollView>
-        {this.state.matches.map(match => (
-          <Card title={match.homeTeam.team.name + ' : ' + match.awayTeam.team.name}>
-
-          </Card>
-        ))}
-        </ScrollView>
+      <View>
+        <Button onPress={this.props.logout} backgroundColor="#291720" title="Odhlasit se">Odhlasit se</Button>
       </View>
     );
   }
