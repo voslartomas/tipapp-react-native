@@ -32,6 +32,7 @@ export default class RegisterFormComponent extends Component {
         <TextInput value={this.state.user.username} placeholder="Přihlašovací jméno" onChangeText={(text) => this.setState({ user: {...this.state.user, username: event.target.value }})} autoCapitalize="none" autoCorrect={false}/>
         <TextInput value={this.state.user.password} placeholder="Heslo" onChangeText={(text) => this.setState({ user: {...this.state.user, password: event.target.value }})} autoCapitalize="none" autoCorrect={false} secureTextEntry={true}/>
         <Button onPress={() => this.register()} backgroundColor="#291720" title="Registrovat se"></Button>
+        <Button onPress={() => { this.props.navigation.goBack() } } backgroundColor="#291720" title="Prihlasit"></Button>
       </View>
     );
   }

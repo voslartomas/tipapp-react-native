@@ -57,6 +57,7 @@ export default class LoginFormComponent extends Component {
         <TextInput placeholder="Přihlašovací jméno" onChangeText={(text) => this.setState({ user: {...this.state.user, username: text} })} autoCapitalize="none" autoCorrect={false}/>
         <TextInput placeholder="Heslo" onChangeText={(text) => this.setState({ user: {...this.state.user, password: text} })} autoCapitalize="none" autoCorrect={false} secureTextEntry={true}/>
         <Button onPress={() => this.logIn()} backgroundColor="#291720" title="Přihlásit se"></Button>
+        <Button onPress={() => { this.props.navigation.navigate('SignUp') } } backgroundColor="#291720" title="Registrace"></Button>
       </View>
     );
   }

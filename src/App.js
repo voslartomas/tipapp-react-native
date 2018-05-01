@@ -1,7 +1,6 @@
 import React from 'react';
-import LoginFormComponent from './components/loginForm.component';
-import SecuredComponent from './components/secured.component';
 import { View, AsyncStorage } from 'react-native';
+import createNavigation from './navigation'
 
 export default class App extends React.Component {
 
@@ -49,10 +48,11 @@ export default class App extends React.Component {
   render() {
     const {isLoggedIn} = this.state
 
+    const Layout = createNavigation(isLoggedIn, () => {this.login()}, () => {this.logout()})
+
     return (
       <View>
-        {!isLoggedIn && <LoginFormComponent login={() => this.login()} />}
-        {isLoggedIn && <SecuredComponent logout={() => this.logout()} />}
+        <Layout />
       </View>
     );
   }
