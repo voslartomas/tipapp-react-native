@@ -27,11 +27,7 @@ export default createNavigation = (isLoggedIn, login, logout) =>  {
 
   const SignedIn = StackNavigator({
     Home: {
-      screen: props => <SecuredComponent {...props} logout={logout} />,
-      navigationOptions: {
-        title: 'Dashboard',
-        headerMode: 'screen',
-      },
+      screen: props => <SecuredComponent {...props} logout={logout} />
     }
   })
 
