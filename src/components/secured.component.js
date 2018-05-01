@@ -6,10 +6,23 @@ import drawer from '../drawer'
 
 export default class SecuredComponent extends Component {
 
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      drawer: undefined
+    }
+
+    drawer(this.props.logout).then(drawer => {
+      this.setState({drawer})
+    })
+  }
+
   render() {
-    const Secured = drawer(this.props.logout)
-    return (
-      <Secured/>
-    );
+    if (this.state.drawer) {
+      return <this.state.drawer />
+    }
+
+    return (<View></View>)
   }
 }

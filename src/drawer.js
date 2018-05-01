@@ -5,12 +5,11 @@ import MainComponent from './components/main.component';
 import LeagueService from './services/league.service';
 
 export default async (logout) => {
-  // load leagues from API /api/leagues/active
-  const leagues = await LeagueService.getLeagues();
+  const leagues = await LeagueService.getLeagues()
 
   const items = {}
   leagues.forEach(league => {
-    items[`${league.name}`] = {
+    items[`${league.league.name}`] = {
       screen: props => <MainComponent {...props} logout={logout} leagueId={league.id} />
     }
   })
