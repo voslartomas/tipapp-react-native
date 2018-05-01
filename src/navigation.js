@@ -5,6 +5,7 @@ import SecuredComponent from './components/secured.component';
 import {
   StackNavigator,
 } from 'react-navigation';
+import styles from './styles'
 
 export default createNavigation = (isLoggedIn, login, logout) =>  {
   const SignedOut = StackNavigator({
@@ -21,6 +22,8 @@ export default createNavigation = (isLoggedIn, login, logout) =>  {
       navigationOptions: {
         title: 'Registrace',
         headerMode: 'screen',
+        headerTintColor: 'white',
+        headerStyle: styles.headerBar,
       },
     },
   });
@@ -30,6 +33,8 @@ export default createNavigation = (isLoggedIn, login, logout) =>  {
       screen: props => <SecuredComponent {...props} logout={logout} />,
       navigationOptions: {
         title: 'NEYMAR',
+        headerTintColor: 'white',
+        headerStyle: styles.headerBar,
       },
     }
   })
