@@ -22,7 +22,6 @@ export default class App extends React.Component {
   }
 
   async logout() {
-    console.log('loging out')
     try {
       await AsyncStorage.setItem('token', '')
     } catch (error) {
