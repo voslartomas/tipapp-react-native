@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { View, ScrollView, Dimensions } from 'react-native';
+import { View, ScrollView, Dimensions, Button } from 'react-native';
 import MatchService from '../services/match.service';
-import { Text, Button, Card } from 'react-native-elements';
+import { Text, Card } from 'react-native-elements';
 import drawer from '../drawer'
 
 export default class SecuredComponent extends Component {
