@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, ScrollView, Dimensions, Button, TextInput, Picker } from 'react-native';
+import { View, ScrollView, Dimensions, Button, TextInput, Picker, StyleSheet } from 'react-native';
 import MatchService from '../services/match.service';
 import { Text, Card } from 'react-native-elements';
 import styles from '../styles';
@@ -7,8 +7,10 @@ import moment from 'moment';
 import LeagueService from '../services/league.service';
 import UserBetsMatchService from '../services/userBetsMatch.service';
 import PlayerService from '../services/player.service';
+import LeaderboardComponent from './leaderboard.component';
+import { TabNavigator } from 'react-navigation';
 
-export default class MainComponent extends Component {
+class MainComponent extends Component {
   constructor(props) {
     super(props)
 
@@ -68,8 +70,7 @@ export default class MainComponent extends Component {
     if (this.props.redirectLogout) {
       this.props.logout()
     }
-
-    return (
+    return (  
       <View style={styles.container}>
         <ScrollView>
           {this.state.matches.map(match => (
@@ -79,13 +80,19 @@ export default class MainComponent extends Component {
               <Text style={styles.normalText}>Tip: {match.homeScore}:{match.awayScore}, {match.scorer}</Text>
               {this.canBet(match) &&
                 (<View>
-                  <TextInput style={styles.input} value={match.homeScore} type="number" name="homeScore" min="0" onChangeText={e => this.handleBetChange(match, e, undefined, 'homeScore')} />
-                  <Text>:</Text>
-                  <TextInput style={styles.input} value={match.awayScore} type="number" name="awayScore" min="0" onChangeText={e => this.handleBetChange(match, e, undefined, 'awayScore')} />
+                  <View style={{flexDirection: 'row'}}>
+                    <View style={{flex: 1}}>
+                      <TextInput style={[styles.input, {justifyContent: 'flex-start'}]} value={match.homeScore} type="number" name="homeScore" min="0" onChangeText={e => this.handleBetChange(match, e, undefined, 'homeScore')} />
+                    </View>
+                    <Text style={{color: 'white', fontWeight: 'bold', marginTop: 20, fontSize: 15}}>:</Text>
+                    <View style={{flex: 1}}>
+                      <TextInput style={[styles.input, {justifyContent: 'flex-end'}]} value={match.awayScore} type="number" name="awayScore" min="0" onChangeText={e => this.handleBetChange(match, e, undefined, 'awayScore')} />
+                    </View>
+                  </View>
                   <Picker onValueChange={(value, index) => {this.handleBetChange(match, null, value)}}>
                     {
                       this.getPlayers(match).map(player => (
-                        <Picker.Item label={player.player.firstName} value={player.id} />
+                        <Picker.Item label={player.player.firstName} value={player.id}/>
                       ))
 
                     }
@@ -96,6 +103,22 @@ export default class MainComponent extends Component {
           ))}
         </ScrollView>
       </View>
+      
     );
   }
 }
+
+class Blemc extends Component {
+  render() {
+    return(
+      <View>
+        <Text>BLEMC</Text>
+      </View>
+    );
+  }
+}
+
+export default TabNavigator({
+  Dashboard: {screen: MainComponent},
+  Blemc: {screen: Blemc}
+});
