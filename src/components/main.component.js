@@ -64,14 +64,13 @@ export default class MainComponent extends Component {
     this.setState({ matches });
     await this.loadBets()
 
-    if (this.props.redirectLogout) {
-      this.props.logout()
-    }
   }
 
   render() {
-    console.log(this.state.matches)
-    console.log(this.state.players)
+    if (this.props.redirectLogout) {
+      this.props.logout()
+    }
+
     return (
       <View style={styles.container}>
         <ScrollView>
@@ -80,6 +79,16 @@ export default class MainComponent extends Component {
             <Card title={match.homeTeam + " : " +  match.awayTeam}>
               <Text>{match.matchHomeScore}:{match.matchAwayScore}{match.matchOvertime ? 'P' : ''}</Text>
               <Text>Datum: {moment(new Date(match.matchDateTime)).fromNow()}</Text>
+<<<<<<< HEAD
+=======
+              {this.canBet(match) &&
+                (<View>
+                  <TextInput value={match.homeScore || 0} type="number" name="homeScore" min="0" onChange={e => this.handleBetChange(match, e)} />
+                  <Text>:</Text>
+                  <TextInput value={match.awayScore || 0} type="number" name="awayScore" min="0" onChange={e => this.handleBetChange(match, e)} />
+                </View>
+                )}
+>>>>>>> 79f2e5a12ec093393d41224436be872a9b27041b
               <Picker onValueChange={(e, { name, value }) => {this.handleBetChange(match, e, value)}} selectedValue={match.scorerId}>
                 {
                   this.getPlayers(match).map(player => (
