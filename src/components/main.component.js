@@ -7,6 +7,7 @@ import moment from 'moment';
 import LeagueService from '../services/league.service';
 import UserBetsMatchService from '../services/userBetsMatch.service';
 import PlayerService from '../services/player.service';
+import codePush, { UpdateState } from 'react-native-code-push';
 
 export default class MainComponent extends Component {
   constructor(props) {
@@ -15,8 +16,15 @@ export default class MainComponent extends Component {
     this.state = {
       matches: [],
       players: [],
-      leagueId: props.leagueId
+      leagueId: props.leagueId,
+      update: false,
     }
+
+    codePush.getUpdateMetadata().then((update) => {
+      if (update) {
+        this.setState({ update });
+      }
+    });
   }
 
   getPlayers(match) {
@@ -71,12 +79,16 @@ export default class MainComponent extends Component {
 
     return (
       <View style={styles.container}>
+        {this.state.update && this.state.update.pending && <Text style={{ color: 'red', textAlign: 'center' }}>Aktualizace je k dispozici</Text>}
+        {this.state.update && !this.state.update.pending && <Text style={{ color: 'white', textAlign: 'center' }}>Vse je aktualni.</Text>}
+        {this.state.update && <Text style={{ color: 'white', textAlign: 'center' }}>{this.state.update.appVersion} {this.state.update.label}</Text>}
+
         <ScrollView>
           {this.state.matches.map(match => (
             <Card titleStyle={styles.subHeader} dividerStyle={{ backgroundColor: styles.secondary }} containerStyle={styles.container} key={match.id} title={match.homeTeam + " : " +  match.awayTeam}>
               <Text style={styles.normalText}>{match.matchHomeScore}:{match.matchAwayScore}{match.matchOvertime ? 'P' : ''}</Text>
               <Text style={styles.normalText}>Datum: {moment(new Date(match.matchDateTime)).fromNow()}</Text>
-              <Text style={styles.normalText}>Tip: {match.homeScore}:{match.awayScore}, {match.scorer}</Text>
+              <Text style={styles.normalText}>{match.homeScore}:{match.awayScore}, {match.scorer} +{match.totalPoints}</Text>
               {this.canBet(match) &&
                 (<View>
                   <TextInput style={styles.input} value={match.homeScore} type="number" name="homeScore" min="0" onChangeText={e => this.handleBetChange(match, e, undefined, 'homeScore')} />
