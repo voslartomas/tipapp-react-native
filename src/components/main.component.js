@@ -15,16 +15,17 @@ export default class MainComponent extends Component {
     this.state = {
       matches: [],
       players: [],
+      leagueId: props.leagueId
     }
   }
 
   getPlayers(match) {
     return this.state.players.filter(player => player.leagueTeamId === match.homeTeamId || player.leagueTeamId === match.awayTeamId)
-      .map(player => ({
-      key: player.id,
-      text: `${player.player.firstName} ${player.player.lastName} ${player.leagueTeam.team.shortcut}`,
-      value: player.id,
-    }))
+  }
+
+  getPlayerById(scorerId) {
+    console.log(this.state.players, scorerId)
+    return this.state.players.filter(player => player.playerId === scorerId)
   }
 
   canBet(match) {
@@ -32,7 +33,7 @@ export default class MainComponent extends Component {
   }
 
   async loadBets() {
-    const matches = await LeagueService.getBetsMatches(this.props.leagueId)
+    const matches = await MatchService.getBetMatches(this.props.leagueId)
 
     const teams = []
     for (const match of matches) {
@@ -43,27 +44,24 @@ export default class MainComponent extends Component {
 
     const players = await PlayerService.getPlayersByTeams(this.props.leagueId, teams)
 
-    this.setState({ matchBets: matches, leagueId: this.props.leagueId, players })
+    this.setState({ matches, leagueId: this.props.leagueId, players })
   }
 
-  async handleBetChange(match, event, scorerId = undefined) {
+  async handleBetChange(match, value, scorerId = undefined, type) {
     if (!scorerId) {
       scorerId = match.scorerId;
     }
-
+    console.log(type, value, scorerId)
     await UserBetsMatchService.put(this.props.leagueId, {matchId: match.matchId1,
-      homeScore: event.target.name === 'homeScore' ? parseInt(event.target.value) : match.homeScore || 0,
-      awayScore: event.target.name === 'awayScore' ? parseInt(event.target.value) : match.awayScore || 0,
+      homeScore: type === 'homeScore' ? parseInt(value) : match.homeScore || 0,
+      awayScore: type === 'awayScore' ? parseInt(value) : match.awayScore || 0,
       scorerId}, match.id)
 
     await this.loadBets()
   }
 
   async componentDidMount() {
-    const matches = await MatchService.getBetMatches(1)
-    this.setState({ matches });
     await this.loadBets()
-
   }
 
   render() {
@@ -74,31 +72,29 @@ export default class MainComponent extends Component {
     return (
       <View style={styles.container}>
         <ScrollView>
-        {/*<Text style={{textAlign: 'center', color: 'white'}}>`Liga cislo: {this.props.leagueId}`</Text>*/}
           {this.state.matches.map(match => (
-            <Card title={match.homeTeam + " : " +  match.awayTeam}>
-              <Text>{match.matchHomeScore}:{match.matchAwayScore}{match.matchOvertime ? 'P' : ''}</Text>
-              <Text>Datum: {moment(new Date(match.matchDateTime)).fromNow()}</Text>
-              <Text style={{textAlign: 'center'}}>TIP</Text>
+            <Card titleStyle={styles.subHeader} dividerStyle={{ backgroundColor: styles.secondary }} containerStyle={styles.container} key={match.id} title={match.homeTeam + " : " +  match.awayTeam}>
+              <Text style={styles.normalText}>{match.matchHomeScore}:{match.matchAwayScore}{match.matchOvertime ? 'P' : ''}</Text>
+              <Text style={styles.normalText}>Datum: {moment(new Date(match.matchDateTime)).fromNow()}</Text>
+              <Text style={styles.normalText}>Tip: {match.homeScore}:{match.awayScore}, {match.scorer}</Text>
               {this.canBet(match) &&
                 (<View>
-                  <TextInput value={match.homeScore || 0} type="number" name="homeScore" min="0" onChange={e => this.handleBetChange(match, e)} />
+                  <TextInput style={styles.input} value={match.homeScore} type="number" name="homeScore" min="0" onChangeText={e => this.handleBetChange(match, e, undefined, 'homeScore')} />
                   <Text>:</Text>
-                  <TextInput value={match.awayScore || 0} type="number" name="awayScore" min="0" onChange={e => this.handleBetChange(match, e)} />
+                  <TextInput style={styles.input} value={match.awayScore} type="number" name="awayScore" min="0" onChangeText={e => this.handleBetChange(match, e, undefined, 'awayScore')} />
+                  <Picker onValueChange={(value, index) => {this.handleBetChange(match, null, value)}}>
+                    {
+                      this.getPlayers(match).map(player => (
+                        <Picker.Item label={player.player.firstName} value={player.id} />
+                      ))
+
+                    }
+                  </Picker>
                 </View>
               )}
-              <Picker onValueChange={(e, { name, value }) => {this.handleBetChange(match, e, value)}} selectedValue={match.scorerId}>
-                {
-                  this.getPlayers(match).map(player => (
-                    <Picker.Item label={player.name} value={player.id} />
-                  ))
-                  
-                }
-              </Picker>
             </Card>
           ))}
         </ScrollView>
-        <Button onPress={this.props.logout} title="odhlasit se"></Button>
       </View>
     );
   }

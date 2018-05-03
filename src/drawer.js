@@ -8,9 +8,10 @@ export default async (logout) => {
   const leagues = await LeagueService.getLeagues()
 
   const items = {}
+  console.log(leagues)
   leagues.forEach(league => {
     items[`${league.league.name}`] = {
-      screen: props => <MainComponent {...props} logout={logout} leagueId={league.id} />
+      screen: props => <MainComponent {...props} logout={logout} leagueId={league.leagueId} />
     }
   })
 

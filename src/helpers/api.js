@@ -2,15 +2,12 @@ import { AsyncStorage } from 'react-native'
 import axios from 'axios'
 
 class Api {
-  baseUrl = 'http://192.168.11.107:7300/'
+  baseUrl = 'http://52.58.100.173:8001/'
   request = undefined
 
   constructor() {
-    if (true) {
-
-    }
     if (process.env.REACT_APP_ENV === 'production') {
-        this.baseUrl = 'http://52.58.100.173/:8001/'
+        this.baseUrl = 'http://52.58.100.173:8001/'
     }
   }
 
@@ -40,7 +37,7 @@ class Api {
 
   async put(url, data) {
     await this.init()
-    return await this.request.put(turl, data)
+    return await this.request.put(url, data)
   }
 }
 
