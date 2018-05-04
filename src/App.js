@@ -1,6 +1,10 @@
 import React from 'react';
 import { View, AsyncStorage } from 'react-native';
 import createNavigation from './navigation'
+import moment from 'moment';
+import 'moment/locale/cs'
+
+moment.locale('cs')
 
 export default class App extends React.Component {
 
@@ -18,7 +22,6 @@ export default class App extends React.Component {
   }
 
   async logout() {
-    console.log('loging out')
     try {
       await AsyncStorage.setItem('token', '')
     } catch (error) {

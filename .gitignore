@@ -1,7 +1,8 @@
 # OSX
 #
 .DS_Store
-
+ios/Pods
+android/tipapp-release.keystore
 # Xcode
 #
 build/
@@ -54,3 +55,7 @@ buck-out/
 
 # Bundle artifact
 *.jsbundle
+
+./dev.js
+
+ios/main.jsbundle.meta

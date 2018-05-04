@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import { View, ScrollView, Dimensions } from 'react-native';
+import { View, ScrollView, Dimensions, Text } from 'react-native';
 import MatchService from '../services/match.service';
-import { Text, Button, Card } from 'react-native-elements';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 export default class ScreenComponent extends Component {

@@ -52,9 +52,9 @@ export default {
     backgroundColor: primaryColor,
     color: 'white'
   },
-  header: { color: '#4f9deb', fontSize: 32, textAlign: 'center', fontWeight: 'bold' },
-  subHeader: { fontSize: 26, textAlign: 'center', fontWeight: 'bold' },
+  header: { color: secondaryColor, fontSize: 32, textAlign: 'center', fontWeight: 'bold' },
+  subHeader: { color: secondaryColor, fontSize: 16, textAlign: 'center', fontWeight: 'bold' },
   bigHeader: { fontSize: 40, textAlign: 'center', fontWeight: 'bold' },
-  normalText: { fontSize: 18, textAlign: 'center', fontWeight: 'bold' },
-  smallText: { fontSize: 14, textAlign: 'center', fontWeight: 'bold' },
+  normalText: { fontSize: 18, color: 'white', textAlign: 'center', fontWeight: 'bold' },
+  smallText: { fontSize: 14, color: 'white', textAlign: 'center', fontWeight: 'bold' },
 };
