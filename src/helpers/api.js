@@ -21,8 +21,8 @@ class Api {
   }
 
   async get(url) {
-    await this.init()
-    return await this.request.get(url)
+      await this.init()
+      return await this.request.get(url)
   }
 
   async delete(url) {

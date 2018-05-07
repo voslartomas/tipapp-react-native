@@ -6,8 +6,15 @@ export default class LeagueService {
 
     return response.data
   }
-  static async getBetsMatches(leagueId, date = '2018-04-29') {
-    const response = await api.get(`api/leagues/${leagueId}/bets/matches?date=${date}`)
+
+  static async getBetsMatches(leagueId) {
+    const response = await api.get(`api/leagues/${leagueId}/bets/matches`)
+
+    return response.data
+  }
+
+  static async getLeaderboard(leagueId) {
+    const response = await api.get(`api/leagues/${leagueId}/leaderboard`)
 
     return response.data
   }

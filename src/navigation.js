@@ -1,6 +1,6 @@
 import React from 'react';
-import LoginFormComponent from './components/loginForm.component';
-import RegisterFormComponent from './components/registerForm.component';
+import LoginFormComponent from './components/account/loginForm.component';
+import RegisterFormComponent from './components/account/registerForm.component';
 import SecuredComponent from './components/secured.component';
 import {
   StackNavigator,

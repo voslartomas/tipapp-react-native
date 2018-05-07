@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { View, ScrollView, Dimensions, Button } from 'react-native';
-import MatchService from '../services/match.service';
 import { Text, Card } from 'react-native-elements';
 import drawer from '../drawer'
 

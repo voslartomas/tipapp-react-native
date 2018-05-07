@@ -1,22 +1,22 @@
 import React, { Component } from 'react';
 import {DrawerNavigator} from 'react-navigation';
-import ScreenComponent from './components/screen.component';
 import MainComponent from './components/main.component';
 import LeagueService from './services/league.service';
+import LogoutComponent from './components/logout.component';
 
 export default async (logout) => {
   const leagues = await LeagueService.getLeagues()
 
   const items = {}
   leagues.forEach(league => {
+    const main = MainComponent(league)
     items[`${league.league.name}`] = {
-      screen: props => <MainComponent {...props} logout={logout} leagueId={league.leagueId} />
+      screen: main
     }
   })
 
-
   items.logout = {
-    screen: props => <MainComponent {...props} logout={logout} redirectLogout={true} />
+    screen: props => <LogoutComponent {...props} logout={logout} />
   }
 
   return DrawerNavigator(
