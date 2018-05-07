@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import api from '../helpers/api';
 import { View, Button, AsyncStorage, ActivityIndicator, StyleSheet, TextInput, Dimensions, Image } from 'react-native';
 import { Text, Input, Header } from 'react-native-elements';
-import styles from '../styles'
+import api from '../../helpers/api';
+import styles from '../../styles'
 
 export default class LoginFormComponent extends Component {
   constructor(props) {

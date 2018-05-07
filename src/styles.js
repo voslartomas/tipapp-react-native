@@ -37,7 +37,6 @@ export default {
   },
   headerBar: {
     backgroundColor: '#202020',
-    color: 'white',
     borderWidth: 1,
     borderBottomColor: '#f3d827'
   },

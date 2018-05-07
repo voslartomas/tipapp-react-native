@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import RegisterService from '../services/register.service';
 import { View, Button, AsyncStorage, ActivityIndicator, StyleSheet, TextInput, Dimensions, Image } from 'react-native';
 import { Text, Input, Header } from 'react-native-elements';
-import styles from '../styles'
+import RegisterService from '../../services/register.service';
+import styles from '../../styles'
 
 export default class RegisterFormComponent extends Component {
   constructor(props) {
