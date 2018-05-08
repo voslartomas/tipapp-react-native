@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import api from '../helpers/api';
-import { View, Button, AsyncStorage, ActivityIndicator, StyleSheet, TextInput, Dimensions, Image } from 'react-native';
+import { View, Button, AsyncStorage, ActivityIndicator, StyleSheet, TextInput, Dimensions, Image, ToastAndroid } from 'react-native';
 import { Text, Input, Header } from 'react-native-elements';
 import styles from '../styles'
 
@@ -36,6 +36,7 @@ export default class LoginFormComponent extends Component {
       this.setState({error: 'spatny login...'})
     } finally {
       this.setState({loading: false})
+      ToastAndroid.show(`Jsi přihlášen/a jako ${this.state.user.username}`, ToastAndroid.SHORT);
     }
 
   }

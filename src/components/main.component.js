@@ -10,7 +10,7 @@ import PlayerService from '../services/player.service';
 import LeaderboardComponent from './leaderboard.component';
 import { TabNavigator } from 'react-navigation';
 
-class MainComponent extends Component {
+export default class MainComponent extends Component {
   constructor(props) {
     super(props)
 
@@ -103,22 +103,7 @@ class MainComponent extends Component {
           ))}
         </ScrollView>
       </View>
-      
     );
   }
 }
 
-class Blemc extends Component {
-  render() {
-    return(
-      <View>
-        <Text>BLEMC</Text>
-      </View>
-    );
-  }
-}
-
-export default TabNavigator({
-  Dashboard: {screen: MainComponent},
-  Blemc: {screen: Blemc}
-});
