@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, ScrollView, Dimensions, Button } from 'react-native';
+import { View, ScrollView, Dimensions, Button, Alert } from 'react-native';
 import { Text, Card } from 'react-native-elements';
 import UserService from '../../services/user.service'
 
@@ -12,12 +12,6 @@ export default class ProfileComponent extends Component {
     }
   }
 
-  handleDeleteConfirm = async (userId) => {
-    await UserService.delete(userId)
-    this.props.logout()
-    this.loadUser()
-  }
-  
   async componentDidMount() {
     this.loadUser()
   }
@@ -36,8 +30,6 @@ export default class ProfileComponent extends Component {
         <Text>{this.state.user.firstName} {this.state.user.lastName}</Text>
         <Text>{this.state.user.email}</Text>
         <Text>{this.state.user.mobileNumber}</Text>
-        <Button color="green" title="Editovat"></Button>
-        <Button color="red" title="Smazat"></Button>
       </View>
     );
   }
