@@ -12,6 +12,24 @@ export default class ProfileComponent extends Component {
     }
   }
 
+  deleteUser(userId) {
+    Alert.alert(
+      'Smazat uživatele',
+      `Opravdu chcete smazat uživatele ${this.state.user.username}?`,
+      [
+        {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+        {text: 'OK', onPress: () => this.handleDeleteConfirm(userId)},
+      ],
+      { cancelable: true }
+    )
+  }
+
+  handleDeleteConfirm = async (userId) => {
+    await UserService.delete(userId)
+    this.props.logout()
+    this.loadUser()
+  }
+
   async componentDidMount() {
     this.loadUser()
   }
@@ -30,6 +48,7 @@ export default class ProfileComponent extends Component {
         <Text>{this.state.user.firstName} {this.state.user.lastName}</Text>
         <Text>{this.state.user.email}</Text>
         <Text>{this.state.user.mobileNumber}</Text>
+        <Button title="Smazat" onPress={() => this.deleteUser(this.state.user.userId)}></Button>
       </View>
     );
   }

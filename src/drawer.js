@@ -4,6 +4,7 @@ import MainComponent from './components/main.component';
 import LeagueService from './services/league.service';
 import LogoutComponent from './components/logout.component';
 import ProfileComponent from './components/account/profile.component';
+import UserFormComponent from './components/account/userForm.component';
 
 export default async (logout) => {
   const leagues = await LeagueService.getLeagues()
@@ -27,6 +28,13 @@ export default async (logout) => {
     screen: ProfileComponent,
     navigationOptions: {
       title: 'Profile',
+    },
+  }
+
+  items.test = {
+    screen: UserFormComponent,
+    navigationOptions: {
+      title: 'USERFORM',
     },
   }
 
