@@ -5,6 +5,7 @@ import LeagueService from './services/league.service';
 import LogoutComponent from './components/logout.component';
 import ProfileComponent from './components/account/profile.component';
 import UserFormComponent from './components/account/userForm.component';
+import BetsSerieComponent from './components/dashboard/bets.serie.component';
 
 export default async (logout) => {
   const leagues = await LeagueService.getLeagues()
@@ -35,6 +36,13 @@ export default async (logout) => {
     screen: UserFormComponent,
     navigationOptions: {
       title: 'USERFORM',
+    },
+  }
+
+  items.blemc = {
+    screen: BetsSerieComponent,
+    navigationOptions: {
+      title: 's00s',
     },
   }
 
