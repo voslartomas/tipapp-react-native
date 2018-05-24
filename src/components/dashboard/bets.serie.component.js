@@ -14,7 +14,7 @@ export default class BetsSerieComponent extends React.Component {
       serieBets: [],
       inputSerieBets: {},
       leagueId: undefined,
-      //loading: true
+      loading: true
     }
   }
 
@@ -37,7 +37,7 @@ export default class BetsSerieComponent extends React.Component {
       }
     })
 
-    this.setState({ serieBets: bets, userSerieBets: userBets, inputSerieBets, leagueId: this.props.leagueId/*ss, loading: false*/ })
+    this.setState({ serieBets: bets, userSerieBets: userBets, inputSerieBets, leagueId: this.props.leagueId, loading: false })
   }
 
   handleSerieBetChange(id, event) {
@@ -63,9 +63,10 @@ export default class BetsSerieComponent extends React.Component {
 
   submitSerieBet(id) {
     if (this.state.inputSerieBets[id]) {
-      UserBetsSerieService.put(this.props.match.params.leagueId, this.state.inputSerieBets[id], this.state.inputSerieBets[id].id)
+      UserBetsSerieService.put(this.props.leagueId, this.state.inputSerieBets[id], this.state.inputSerieBets[id].id)
       this.loadBets()
     }
+    this.loadBets()
   }
 
   betPlaced(bet) {
@@ -82,26 +83,27 @@ export default class BetsSerieComponent extends React.Component {
   }
 
   render() {
-    if (this.props.id !== this.state.leagueId) {
+    if (this.props.leagueId !== this.state.leagueId) {
       this.componentDidMount()
     }
     return(
       <View style={styles.container} id="0">
-        {/*this.state.loading && <Loader />*/}
-        <Text style={{color: "#fff"}}>{this.state.leagueId}</Text>
+        {this.state.loading && <Loader />}
         <ScrollView>
           {this.state.serieBets.map(bet => (
             <Card titleStyle={styles.subHeader} dividerStyle={{ backgroundColor: styles.secondary }} containerStyle={styles.container} key={bet.id} title={bet.homeTeam.team.name + " : " +  bet.awayTeam.team.name}>
               <Text style={styles.normalText}>{bet.homeTeamScore}:{bet.awayTeamScore}</Text>
+              {this.betPlaced(bet) && <Text style={styles.normalText}>Tip: {this.state.inputSerieBets[bet.id].homeTeamScore}:{this.state.inputSerieBets[bet.id].awayTeamScore}</Text>}
               <View style={{flexDirection: 'row'}}>
                 <View style={{flex: 1}}>
-                  <TextInput style={[styles.input, {justifyContent: 'flex-start'}]} value={bet.homeTeamScore} type="number" name="homeScore" min="0" onChangeText={e => this.handleSerieBetChange(bet, e)} />
+                  <TextInput style={[styles.input, {justifyContent: 'flex-start'}]} value={(this.state.inputSerieBets[bet.id] && this.state.inputSerieBets[bet.id].homeTeamScore) || 0} type="number" name="homeScore" min="0" max="4" onChangeText={e => this.handleSerieBetChange(bet.id, e)} />
                 </View>
                 <Text style={{color: 'white', fontWeight: 'bold', marginTop: 20, fontSize: 15}}>:</Text>
                 <View style={{flex: 1}}>
-                  <TextInput style={[styles.input, {justifyContent: 'flex-end'}]} value={bet.awayTeamScore} type="number" name="awayScore" min="0" onChangeText={e => this.handleSerieBetChange(bet, e)} />
+                  <TextInput style={[styles.input, {justifyContent: 'flex-end'}]} value={(this.state.inputSerieBets[bet.id] && this.state.inputSerieBets[bet.id].awayTeamScore) || 0} type="number" name="awayScore" min="0" max="4" onChangeText={e => this.handleSerieBetChange(bet.id, e)} />
                 </View>
               </View>
+              <Button onPress={() => this.submitSerieBet(bet.id)} title="Save bet"/>
             </Card>
           ))}
         </ScrollView>
