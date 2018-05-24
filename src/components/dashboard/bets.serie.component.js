@@ -14,7 +14,7 @@ export default class BetsSerieComponent extends React.Component {
       serieBets: [],
       inputSerieBets: {},
       leagueId: undefined,
-      loading: true
+      //loading: true
     }
   }
 
@@ -23,9 +23,8 @@ export default class BetsSerieComponent extends React.Component {
   }
 
   async loadBets() {
-    console.log('SOOOSSSSSSSSSSSSSSSSSSSS')
-    const bets = await BetsSerieService.getAll(this.props.match.params.leagueId)
-    const userBets = await UserBetsSerieService.getAll(this.props.match.params.leagueId)
+    const bets = await BetsSerieService.getAll(this.props.leagueId)
+    const userBets = await UserBetsSerieService.getAll(this.props.leagueId)
 
     const inputSerieBets = []
     userBets.forEach((userBet) => {
@@ -37,8 +36,8 @@ export default class BetsSerieComponent extends React.Component {
         id: userBet.id
       }
     })
-    
-    this.setState({ serieBets: bets, userSerieBets: userBets, inputSerieBets, leagueId: this.props.id, loading: false })
+
+    this.setState({ serieBets: bets, userSerieBets: userBets, inputSerieBets, leagueId: this.props.leagueId/*ss, loading: false*/ })
   }
 
   handleSerieBetChange(id, event) {
@@ -53,8 +52,8 @@ export default class BetsSerieComponent extends React.Component {
       inputSerieBets: Object.assign(this.state.inputSerieBets, {
         [id]: {
           leagueSpecialBetSerieId: id,
-          homeTeamScore: event.target.name === 'homeTeamScore' ? parseInt(event.target.value) : defaultHome,
-          awayTeamScore: event.target.name === 'awayTeamScore' ? parseInt(event.target.value) : defaultAway,
+          homeTeamScore: event === 'homeTeamScore' ? parseInt(event) : defaultHome,
+          awayTeamScore: event === 'awayTeamScore' ? parseInt(event) : defaultAway,
           totalPoints: this.state.inputSerieBets[id] ? this.state.inputSerieBets[id].totalPoints : 0,
           id: this.state.inputSerieBets[id] ? this.state.inputSerieBets[id].id : 0,
         },
@@ -87,17 +86,25 @@ export default class BetsSerieComponent extends React.Component {
       this.componentDidMount()
     }
     return(
-      <View style={styles.container}>
+      <View style={styles.container} id="0">
         {/*this.state.loading && <Loader />*/}
-        <Text>HEELO</Text>
+        <Text style={{color: "#fff"}}>{this.state.leagueId}</Text>
         <ScrollView>
           {this.state.serieBets.map(bet => (
             <Card titleStyle={styles.subHeader} dividerStyle={{ backgroundColor: styles.secondary }} containerStyle={styles.container} key={bet.id} title={bet.homeTeam.team.name + " : " +  bet.awayTeam.team.name}>
               <Text style={styles.normalText}>{bet.homeTeamScore}:{bet.awayTeamScore}</Text>
-              
+              <View style={{flexDirection: 'row'}}>
+                <View style={{flex: 1}}>
+                  <TextInput style={[styles.input, {justifyContent: 'flex-start'}]} value={bet.homeTeamScore} type="number" name="homeScore" min="0" onChangeText={e => this.handleSerieBetChange(bet, e)} />
+                </View>
+                <Text style={{color: 'white', fontWeight: 'bold', marginTop: 20, fontSize: 15}}>:</Text>
+                <View style={{flex: 1}}>
+                  <TextInput style={[styles.input, {justifyContent: 'flex-end'}]} value={bet.awayTeamScore} type="number" name="awayScore" min="0" onChangeText={e => this.handleSerieBetChange(bet, e)} />
+                </View>
+              </View>
             </Card>
           ))}
-        </ScrollView>        
+        </ScrollView>
       </View>
     );
   }

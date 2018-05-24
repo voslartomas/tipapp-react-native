@@ -39,13 +39,6 @@ export default async (logout) => {
     },
   }
 
-  items.blemc = {
-    screen: BetsSerieComponent,
-    navigationOptions: {
-      title: 's00s',
-    },
-  }
-
   return DrawerNavigator(
     items,
     {
