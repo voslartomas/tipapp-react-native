@@ -35,13 +35,12 @@ export default class ProfileComponent extends Component {
   }
 
   async loadUser() {
-    console.log("JOO")
     const currentUser = await UserService.getCurrentUser()
     this.setState({ user: currentUser })
   }
   
   render() {
-    console.log(this.state.user);
+
     return (
       <View>
         <Text>PROFIL</Text>

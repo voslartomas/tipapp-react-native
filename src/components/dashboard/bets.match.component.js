@@ -29,7 +29,6 @@ export default class BetsMatchComponent extends React.Component {
   }
 
   getPlayerById(scorerId) {
-    console.log(this.state.players, scorerId)
     return this.state.players.filter(player => player.playerId === scorerId)
   }
 
