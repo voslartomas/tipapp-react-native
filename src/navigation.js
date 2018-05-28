@@ -36,7 +36,7 @@ export default createNavigation = (isLoggedIn, login, logout) =>  {
         headerTintColor: 'white',
         headerStyle: styles.headerBar,
       },
-    }
+    },
   })
 
   return StackNavigator(
@@ -45,12 +45,14 @@ export default createNavigation = (isLoggedIn, login, logout) =>  {
       screen: SignedIn,
       navigationOptions: {
         gesturesEnabled: false,
-      } },
+      } 
+    },
     SignedOut: {
       screen: SignedOut,
       navigationOptions: {
         gesturesEnabled: false,
-      } },
+      } 
+    },
   },
   {
     mode: 'modal',
