@@ -16,8 +16,6 @@ export default class UserService {
   static async getCurrentUser() {
     const response = await api.get('api/users/current')
 
-    console.log("HELLO")
-    console.log(response.data)
     return response.data
   }
 

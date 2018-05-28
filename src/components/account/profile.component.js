@@ -17,7 +17,7 @@ export default class ProfileComponent extends Component {
       'Smazat uživatele',
       `Opravdu chcete smazat uživatele ${this.state.user.username}?`,
       [
-        {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+        {text: 'Cancel', style: 'cancel'},
         {text: 'OK', onPress: () => this.handleDeleteConfirm(userId)},
       ],
       { cancelable: true }
