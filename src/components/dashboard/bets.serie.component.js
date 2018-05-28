@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { View, ScrollView, Dimensions, Button, TextInput, Picker, StyleSheet } from 'react-native';
 import { Text, Card } from 'react-native-elements';
 import Loader from '../shared/loader.component'
-import BetsSerieService from '../../services/betsSerie.service'
 import UserBetsSerieService from '../../services/userBetsSerie.service'
 import styles from '../../styles'
 
@@ -23,54 +22,32 @@ export default class BetsSerieComponent extends React.Component {
   }
 
   async loadBets() {
-    const bets = await BetsSerieService.getAll(this.props.leagueId)
-    const userBets = await UserBetsSerieService.getAll(this.props.leagueId)
+    const bets = await UserBetsSerieService.getAll(this.props.leagueId)
 
-    const inputSerieBets = []
-    userBets.forEach((userBet) => {
-      inputSerieBets[userBet.leagueSpecialBetSerieId] = {
-        leagueSpecialBetSerieId: userBet.leagueSpecialBetSerieId,
-        homeTeamScore: userBet.homeTeamScore,
-        awayTeamScore: userBet.awayTeamScore,
-        totalPoints: userBet.totalPoints,
-        id: userBet.id
-      }
-    })
-
-    this.setState({ serieBets: bets, userSerieBets: userBets, inputSerieBets, leagueId: this.props.leagueId, loading: false })
+    this.setState({ serieBets: bets, leagueId: this.props.leagueId, loading: false })
   }
 
-  handleSerieBetChange(id, event) {
-    let defaultHome,
-      defaultAway = 0
-    if (this.state.inputSerieBets[id]) {
-      defaultHome = this.state.inputSerieBets[id].homeTeamScore
-      defaultAway = this.state.inputSerieBets[id].awayTeamScore
-    }
+  async submitSerieBet(bet) {
+    this.setState({ loading: true })
+    await UserBetsSerieService.put(this.props.leagueId, {
+      homeTeamScore: bet.homeTeamScore,
+      awayTeamScore: bet.awayTeamScore,
+      leagueSpecialBetSerieId: bet.leagueSpecialBetSerieId
+    }, bet.id | 0)
 
-    this.setState({
-      inputSerieBets: Object.assign(this.state.inputSerieBets, {
-        [id]: {
-          leagueSpecialBetSerieId: id,
-          homeTeamScore: event === 'homeTeamScore' ? parseInt(event) : defaultHome,
-          awayTeamScore: event === 'awayTeamScore' ? parseInt(event) : defaultAway,
-          totalPoints: this.state.inputSerieBets[id] ? this.state.inputSerieBets[id].totalPoints : 0,
-          id: this.state.inputSerieBets[id] ? this.state.inputSerieBets[id].id : 0,
-        },
-      }),
-    })
+    await this.loadBets()
+    this.setState({ loading: false })
   }
 
-  submitSerieBet(id) {
-    if (this.state.inputSerieBets[id]) {
-      UserBetsSerieService.put(this.props.leagueId, this.state.inputSerieBets[id], this.state.inputSerieBets[id].id)
-      this.loadBets()
-    }
-    this.loadBets()
+  async handleBetChange(bet, value, eventType) {
+    bet.homeTeamScore = eventType === 'home' ? parseInt(value) : bet.homeTeamScore || 0
+    bet.awayTeamScore = eventType === 'away' ? parseInt(value) : bet.awayTeamScore || 0
+
+    this.setState({ loading: false })
   }
 
   betPlaced(bet) {
-    return this.state.inputSerieBets[bet.id]
+    return bet.id
   }
 
   betCorrect(bet) {
@@ -86,24 +63,48 @@ export default class BetsSerieComponent extends React.Component {
     if (this.props.leagueId !== this.state.leagueId) {
       this.componentDidMount()
     }
+
     return(
       <View style={styles.container} id="0">
         {this.state.loading && <Loader />}
         <ScrollView>
           {this.state.serieBets.map(bet => (
-            <Card titleStyle={styles.subHeader} dividerStyle={{ backgroundColor: styles.secondary }} containerStyle={styles.container} key={bet.id} title={bet.homeTeam.team.name + " : " +  bet.awayTeam.team.name}>
-              <Text style={styles.normalText}>{bet.homeTeamScore}:{bet.awayTeamScore}</Text>
-              {this.betPlaced(bet) && <Text style={styles.normalText}>Tip: {this.state.inputSerieBets[bet.id].homeTeamScore}:{this.state.inputSerieBets[bet.id].awayTeamScore}</Text>}
+            <Card
+              titleStyle={styles.subHeader}
+              dividerStyle={{ backgroundColor: styles.secondary }}
+              containerStyle={styles.container}
+              key={bet.id}
+              title={bet.homeTeam + " : " +  bet.awayTeam}>
+              <Text style={styles.normalText}>
+                {bet.serieHomeScore}:{bet.serieAwayScore}
+              </Text>
+
+              {this.betPlaced(bet) && <Text style={styles.normalText}>Tip: {bet.homeTeamScore}:{bet.awayTeamScore}</Text>}
+
               <View style={{flexDirection: 'row'}}>
                 <View style={{flex: 1}}>
-                  <TextInput style={[styles.input, {justifyContent: 'flex-start'}]} value={(this.state.inputSerieBets[bet.id] && this.state.inputSerieBets[bet.id].homeTeamScore) || 0} type="number" name="homeScore" min="0" max="4" onChangeText={e => this.handleSerieBetChange(bet.id, e)} />
+                  <TextInput
+                    style={[styles.input, {justifyContent: 'flex-start'}]}
+                    value={bet.homeTeamScore || 0}
+                    type="number"
+                    name="homeScore"
+                    min="0"
+                    max="4"
+                    onChangeText={val => this.handleBetChange(bet, val, 'home')} />
                 </View>
                 <Text style={{color: 'white', fontWeight: 'bold', marginTop: 20, fontSize: 15}}>:</Text>
                 <View style={{flex: 1}}>
-                  <TextInput style={[styles.input, {justifyContent: 'flex-end'}]} value={(this.state.inputSerieBets[bet.id] && this.state.inputSerieBets[bet.id].awayTeamScore) || 0} type="number" name="awayScore" min="0" max="4" onChangeText={e => this.handleSerieBetChange(bet.id, e)} />
+                  <TextInput
+                    style={[styles.input, {justifyContent: 'flex-end'}]}
+                    value={bet.awayTeamScore || 0}
+                    type="number"
+                    name="awayScore"
+                    min="0"
+                    max="4"
+                    onChangeText={val => this.handleBetChange(bet, val, 'away')} />
                 </View>
               </View>
-              <Button onPress={() => this.submitSerieBet(bet.id)} title="Save bet"/>
+              <Button onPress={() => this.submitSerieBet(bet)} title="Save bet"/>
             </Card>
           ))}
         </ScrollView>
