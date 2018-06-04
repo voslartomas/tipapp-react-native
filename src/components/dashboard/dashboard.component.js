@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import BetsMatchComponent from './dashboard/bets.match.component';
-import BetsSerieComponent from './dashboard/bets.serie.component';
+import BetsMatchComponent from './bets.match.component';
+import BetsSerieComponent from './bets.serie.component';
 import { TabNavigator } from 'react-navigation';
 
-export default (league) => {
+export default () => {
   return TabNavigator({
-    Matches: {screen: props => <BetsMatchComponent leagueId={league.leagueId} />},
-    Series: {screen: props => <BetsSerieComponent leagueId={league.leagueId}/>}
+    Matches: {screen: props => <BetsMatchComponent leagueId={this.props.leagueId} />},
+    Series: {screen: props => <BetsSerieComponent leagueId={this.props.leagueId}/>}
   })
 }
