@@ -6,6 +6,7 @@ import LogoutComponent from './components/logout.component';
 import ProfileComponent from './components/account/profile.component';
 import UserFormComponent from './components/account/userForm.component';
 import BetsSerieComponent from './components/dashboard/bets.serie.component';
+import styles from './styles'
 
 export default async (logout) => {
   const leagues = await LeagueService.getLeagues()
@@ -18,13 +19,6 @@ export default async (logout) => {
     }
   })
 
-  items.logout = {
-    screen: props => <LogoutComponent {...props} logout={logout} />,
-    navigationOptions: {
-      title: 'Logout',
-    },
-  }
-
   items.profile = {
     screen: ProfileComponent,
     navigationOptions: {
@@ -32,10 +26,10 @@ export default async (logout) => {
     },
   }
 
-  items.test = {
-    screen: UserFormComponent,
+  items.logout = {
+    screen: props => <LogoutComponent {...props} logout={logout} />,
     navigationOptions: {
-      title: 'USERFORM',
+      title: 'Logout',
     },
   }
 
@@ -43,7 +37,11 @@ export default async (logout) => {
     items,
     {
       // initialRouteName: 'First',
-      drawerPosition: 'left'
+      drawerPosition: 'left',
+      drawerBackgroundColor: styles.primary,
+      contentOptions: {
+        inactiveTintColor: 'white'
+      }
     }
   );
 }

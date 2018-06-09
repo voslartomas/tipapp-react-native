@@ -102,8 +102,8 @@ android {
         applicationId "com.tipappreactnative"
         minSdkVersion 16
         targetSdkVersion 22
-        versionCode 3
-        versionName "1.2"
+        versionCode 4
+        versionName "1.3"
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
@@ -149,9 +149,9 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-vector-icons')
     compile project(':react-native-code-push')
     compile project(':appcenter-push')
-    compile project(':react-native-vector-icons')
     compile project(':appcenter-crashes')
     compile project(':appcenter-analytics')
     compile project(':appcenter')

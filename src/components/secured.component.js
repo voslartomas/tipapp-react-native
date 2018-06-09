@@ -4,10 +4,10 @@ import { Text, Card } from 'react-native-elements';
 import drawer from '../drawer'
 
 export default class SecuredComponent extends Component {
-
   constructor(props) {
     super(props)
-
+    console.log(props)
+    
     this.state = {
       drawer: undefined
     }

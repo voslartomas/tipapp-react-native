@@ -3,7 +3,7 @@ import LoginFormComponent from './components/account/loginForm.component';
 import RegisterFormComponent from './components/account/registerForm.component';
 import SecuredComponent from './components/secured.component';
 import {
-  StackNavigator,
+  StackNavigator
 } from 'react-navigation';
 import styles from './styles'
 
@@ -35,6 +35,9 @@ export default createNavigation = (isLoggedIn, login, logout) =>  {
         title: 'NEYMAR',
         headerTintColor: 'white',
         headerStyle: styles.headerBar,
+        styles: {
+          statusBarTextColorScheme: 'dark',
+        }
       },
     },
   })
@@ -45,13 +48,13 @@ export default createNavigation = (isLoggedIn, login, logout) =>  {
       screen: SignedIn,
       navigationOptions: {
         gesturesEnabled: false,
-      } 
+      }
     },
     SignedOut: {
       screen: SignedOut,
       navigationOptions: {
         gesturesEnabled: false,
-      } 
+      }
     },
   },
   {

@@ -6,4 +6,10 @@ export default class PlayerService {
 
       return response.data
   }
+
+  static async getAll(leagueId) {
+      const response = await api.get(`api/leagues/${leagueId}/players/`)
+
+      return response.data
+  }
 }
