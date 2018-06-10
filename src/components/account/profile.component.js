@@ -41,7 +41,6 @@ export default class ProfileComponent extends Component {
   }
   
   render() {
-
     return (
       <View style={styles.container}>
         <Text style={styles.normalText}>PROFIL</Text>

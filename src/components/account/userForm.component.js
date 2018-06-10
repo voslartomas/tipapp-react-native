@@ -21,6 +21,7 @@ export default class UserFormComponent extends Component {
     if (this.state.user.id) {
       await UserService.update(this.state.user, this.state.user.id)
     }
+    this.props.navigation.navigate('Profile')
   }
 
   render() {
