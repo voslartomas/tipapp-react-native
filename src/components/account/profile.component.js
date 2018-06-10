@@ -48,6 +48,7 @@ export default class ProfileComponent extends Component {
         <Text style={styles.normalText}>{this.state.user.firstName} {this.state.user.lastName}</Text>
         <Text style={styles.normalText}>{this.state.user.email}</Text>
         <Text style={styles.normalText}>{this.state.user.mobileNumber}</Text>
+        <Button title="Editovat" onPress={() => { this.props.navigation.navigate('EditProfile') } }></Button>
         <Button title="Smazat" onPress={() => this.deleteUser(this.state.user.userId)}></Button>
       </View>
     );
