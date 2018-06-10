@@ -21,6 +21,8 @@ export default class UserFormComponent extends Component {
     if (this.state.user.id) {
       await UserService.update(this.state.user, this.state.user.id)
     }
+
+    await this.props.navigation.state.params.loadUser()
     this.props.navigation.navigate('Profile')
   }
 
@@ -41,20 +43,6 @@ export default class UserFormComponent extends Component {
           placeholder="Příjmení"
           value={this.state.user.lastName}
           onChangeText={text => this.setState({ user: { ...this.state.user, lastName: text } })}
-        />
-        <TextInput
-          style={styles.input}
-          placeholderTextColor='white'
-          placeholder="E-Mail"
-          value={this.state.user.email}
-          onChangeText={text => this.setState({ user: { ...this.state.user, email: text } })}
-        />
-        <TextInput
-          style={styles.input}
-          placeholderTextColor='white'
-          placeholder="Telefon"
-          value={this.state.user.mobileNumber}
-          onChangeText={text => this.setState({ user: { ...this.state.user, mobileNumber: text } })}
         />
         <Button onPress={() => this.saveForm()} title="Potvrdit změny"></Button>
       </View>

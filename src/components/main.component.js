@@ -9,7 +9,6 @@ import { TabNavigator } from 'react-navigation';
 
 const dashboardOptions = {
   lazy: true,
-  statusBarStyle: 'dark',
   tabBarPosition: 'top',
   tabBarOptions: {
     activeTintColor: styles.secondary,
@@ -33,12 +32,12 @@ export default (league) => {
             title: 'Zápasy'
           }
         },
-        Series: {
+        /*Series: {
           screen: props => <BetsSerieComponent leagueId={league.leagueId}/>,
           navigationOptions: {
             title: 'Série'
           }
-        },
+        },*/
         Singles: {
           screen: props => <BetsSpecialComponent leagueId={league.leagueId}/>,
           navigationOptions: {

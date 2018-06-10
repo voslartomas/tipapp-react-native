@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, ScrollView, Dimensions, Button, TextInput, Picker, StyleSheet, StatusBar, KeyboardAvoidingView } from 'react-native';
+import { View, ScrollView, Dimensions, Button, TextInput, Picker, StyleSheet, KeyboardAvoidingView } from 'react-native';
 import { Text, Card } from 'react-native-elements';
 import moment from 'moment';
 import codePush, { UpdateState } from 'react-native-code-push';
@@ -135,7 +135,6 @@ export default class BetsMatchComponent extends React.Component {
   render() {
     return(
       <View style={styles.container}>
-        <StatusBar barStyle="light-content"/>
         {this.state.loading && <Loader />}
         <ScrollView>
           <KeyboardAvoidingView>

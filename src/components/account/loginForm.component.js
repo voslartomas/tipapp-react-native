@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Button, AsyncStorage, StyleSheet, TextInput, Dimensions, Image } from 'react-native';
+import { View, Button, AsyncStorage, StyleSheet, TextInput, Dimensions, Image, StatusBar } from 'react-native';
 import { Text, Input, Header } from 'react-native-elements';
 import api from '../../helpers/api';
 import styles from '../../styles'
@@ -44,6 +44,7 @@ export default class LoginFormComponent extends Component {
   render() {
     return (
       <View style={styles.container}>
+        <StatusBar barStyle="light-content"/>
         {this.state.loading && <Loader />}
         <Text style={styles.logo}>Neymar</Text>
         <Text style={styles.error}>{this.state.error}</Text>
