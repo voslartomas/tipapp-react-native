@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { View, Button, AsyncStorage, ActivityIndicator, StyleSheet, TextInput, Dimensions, Image } from 'react-native';
+import { View, Button, AsyncStorage, StyleSheet, TextInput, Dimensions, Image } from 'react-native';
 import { Text, Input, Header } from 'react-native-elements';
 import api from '../../helpers/api';
 import styles from '../../styles'
+import Loader from '../shared/loader.component'
 
 export default class LoginFormComponent extends Component {
   constructor(props) {
@@ -43,7 +44,7 @@ export default class LoginFormComponent extends Component {
   render() {
     return (
       <View style={styles.container}>
-        {this.state.loading && <ActivityIndicator size="large" color="#0000ff" />}
+        {this.state.loading && <Loader />}
         <Text style={styles.logo}>Neymar</Text>
         <Text style={styles.error}>{this.state.error}</Text>
         <TextInput placeholderTextColor='white' required style={styles.input} placeholder="Přihlašovací jméno" onChangeText={(text) => this.setState({ user: {...this.state.user, username: text} })} autoCapitalize="none" autoCorrect={false}/>

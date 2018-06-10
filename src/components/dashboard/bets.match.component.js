@@ -77,6 +77,10 @@ export default class BetsMatchComponent extends React.Component {
 
   async saveBet(match) {
     const id = match.id || 0
+
+    match.loading = true
+    this.setState({})
+
     await UserBetsMatchService.put(this.props.leagueId, {matchId: match.matchId1,
       homeScore: match.homeScore || 0,
       awayScore: match.awayScore || 0,
@@ -148,7 +152,8 @@ export default class BetsMatchComponent extends React.Component {
                     this.setState({ pickerVisible: true, currentBet: match })
                   }} />
 
-                  <Button title="Uložit" onPress={() => this.saveBet(match)}>Uložit sázku</Button>
+                  {!match.loading && <Button title="Uložit" onPress={() => this.saveBet(match)}>Uložit sázku</Button>}
+                  {match.loading && <Loader />}
                 </View>
               )}
             </Card>

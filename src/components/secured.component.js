@@ -7,7 +7,7 @@ export default class SecuredComponent extends Component {
   constructor(props) {
     super(props)
     console.log(props)
-    
+
     this.state = {
       drawer: undefined
     }

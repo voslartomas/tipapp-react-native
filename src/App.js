@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, AsyncStorage } from 'react-native';
+import { View, AsyncStorage, KeyboardAvoidingView } from 'react-native';
 import createNavigation from './navigation'
 import { Navigation } from 'react-navigation';
 import moment from 'moment';

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, ScrollView, Dimensions, Button, TextInput, Picker, StyleSheet, StatusBar } from 'react-native';
+import { View, ScrollView, Dimensions, Button, TextInput, Picker, StyleSheet, StatusBar, KeyboardAvoidingView } from 'react-native';
 import { Text, Card } from 'react-native-elements';
 import moment from 'moment';
 import codePush, { UpdateState } from 'react-native-code-push';
@@ -45,21 +45,30 @@ export default class BetsMatchComponent extends React.Component {
     return new Date(match.endDate).getTime() > new Date().getTime()
   }
 
-  handleBetChange(value, type) {
-    const single = this.state.currentBet
+  handleBetChange(single, value, type) {
+    if (!single) {
+      single = this.state.currentBet
+    }
+
     switch (type) {
       case 1:
         single.playerResultId = value
+        const player = this.state.players.find(player => player.id === value)
+        single.playerBet = `${player.player.firstName} ${player.player.lastName}`
         break;
       case 2:
         single.teamResultId = value
+        single.teamBet = this.state.teams.find(team => team.id === value).team.name
         break;
       case 3:
         single.value = value
+        single.valueBet = value
         break;
     }
 
-    this.setState({ visible: false })
+    if (type === 1 || type === 2) {
+      this.setState({ visible: false })
+    }
   }
 
   onCancel() {
@@ -78,14 +87,20 @@ export default class BetsMatchComponent extends React.Component {
     } else if (single.type === 3) {
       data['value'] = single.value
     }
-    console.log(data)
-    await UserBetsSpecialService.put(this.props.leagueId, data, single.id | 0)
-    this.loadBets()
+
+    single.loading = true
+    this.setState({})
+
+    await UserBetsSpecialService.put(this.props.leagueId, data, single.id)
+
+    single.loading = false
+
+    await this.loadBets()
   }
 
   async loadBets() {
     const specials = await UserBetsSpecialService.getAll(this.props.leagueId)
-    console.log(specials)
+
     const teams = await TeamService.getAll(this.props.leagueId)
     const players = await PlayerService.getAll(this.props.leagueId)
 
@@ -123,34 +138,38 @@ export default class BetsMatchComponent extends React.Component {
         <StatusBar barStyle="light-content"/>
         {this.state.loading && <Loader />}
         <ScrollView>
-          {this.state.matches.map(match => (
-            <Card
-              titleStyle={styles.subHeader}
-              dividerStyle={{ backgroundColor: styles.secondary }}
-              containerStyle={styles.container}
-              key={`${match.awayTeamId}-${match.homeTeamId}`}
-              title={this.getHeader(match)}>
-              {match.id && <Text style={styles.normalText}>Tip: {this.getBetTitle(match)}</Text>}
-              {this.canBet(match) &&
-                (<View>
-                  {match.type === 3 && <TextInput
-                    style={[styles.input, {justifyContent: 'flex-start'}]}
-                    value={match.homeScore}
-                    returnKeyType="next"
-                    keyboardAppearance="dark"
-                    keyboardType="numeric"
-                    name="homeScore"
-                    min="0"
-                    onChangeText={value => this.handleBetChange(match, value, 3)} />}
+          <KeyboardAvoidingView>
+            {this.state.matches.map(match => (
+              <Card
+                titleStyle={styles.subHeader}
+                dividerStyle={{ backgroundColor: styles.secondary }}
+                containerStyle={styles.container}
+                key={`${match.singleId}`}
+                title={this.getHeader(match)}>
+                {(match.id || this.getBetTitle(match)) && <Text style={styles.normalText}>Tip: {this.getBetTitle(match)}</Text>}
+                {this.canBet(match) &&
+                  (<View>
+                    {match.type === 3 && <TextInput
+                      style={[styles.input, {justifyContent: 'flex-start'}]}
+                      returnKeyType="done"
+                      keyboardAppearance="dark"
+                      keyboardType="numeric"
+                      min="0"
+                      onChangeText={value => {
+                        this.setState({currentBet: match})
+                        this.handleBetChange(match, value, 3)
+                      }} />}
 
-                    {match.type === 1 && <Button onPress={() => this.setState({playersVisible: true, currentBet: match})} title="Vybrat" />}
-                    {match.type === 2 && <Button onPress={() => this.setState({teamsVisible: true, currentBet: match})} title="Vybrat" />}
+                      {match.type === 1 && <Button onPress={() => this.setState({playersVisible: true, currentBet: match})} title="Vybrat hráče" />}
+                      {match.type === 2 && <Button onPress={() => this.setState({teamsVisible: true, currentBet: match})} title="Vybrat tým" />}
 
-                  <Button title="Uložit" onPress={() => this.saveBet(match)} />
-                </View>
-              )}
-            </Card>
-          ))}
+                    {match === this.state.currentBet && !match.loading && <Button title="Uložit" onPress={() => this.saveBet(match)} />}
+                    {match.loading && <Loader />}
+                  </View>
+                )}
+              </Card>
+            ))}
+          </KeyboardAvoidingView>
         </ScrollView>
 
         {<ModalFilterPicker
@@ -160,7 +179,7 @@ export default class BetsMatchComponent extends React.Component {
             }})}
             onSelect={(value) => {
               this.setState({ playersVisible: false })
-              this.handleBetChange(value, 1)
+              this.handleBetChange(undefined, value, 1)
             }}
             onCancel={() => {
               this.setState({ playersVisible: false })
@@ -175,7 +194,7 @@ export default class BetsMatchComponent extends React.Component {
             }})}
             onSelect={(value) => {
                 this.setState({ teamsVisible: false })
-                this.handleBetChange(value, 2)
+                this.handleBetChange(undefined, value, 2)
             }}
             onCancel={() => {
               this.setState({ teamsVisible: false })
