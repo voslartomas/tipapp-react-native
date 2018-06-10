@@ -3,7 +3,7 @@ import App from './src/App';
 import codePush from 'react-native-code-push';
 
 const MyApp = codePush({
-  updateDialog: true,
+  updateDialog: false,
   checkFrequency: codePush.CheckFrequency.ON_APP_RESTART,
   installMode: codePush.InstallMode.IMMEDIATE,
 })(App);

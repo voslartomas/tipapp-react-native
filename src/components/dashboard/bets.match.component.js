@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, ScrollView, Dimensions, Button, TextInput, Picker, StyleSheet, StatusBar } from 'react-native';
+import { View, ScrollView, Dimensions, Button, TextInput, Picker, StyleSheet, StatusBar, RefreshControl } from 'react-native';
 import { Text, Card, CheckBox } from 'react-native-elements';
 import moment from 'moment';
 import codePush, { UpdateState } from 'react-native-code-push';
@@ -23,6 +23,7 @@ export default class BetsMatchComponent extends React.Component {
       update: false,
       loading: true,
       pickerVisible: false,
+      refreshing: false,
       currentBet: undefined
     }
   }
@@ -92,15 +93,29 @@ export default class BetsMatchComponent extends React.Component {
   }
 
   getHeader(match) {
-    return `${match.homeTeam} ${match.matchHomeScore}:${match.matchAwayScore}${match.matchOvertime ? 'P' : ''} ${match.awayTeam}, ${moment(new Date(match.matchDateTime)).fromNow()}`
+    return `${match.homeTeam} ${match.matchHomeScore}:${match.matchAwayScore}${match.matchOvertime ? 'P' : ''} ${match.awayTeam}`
   }
+
+  _onRefresh() {
+   this.setState({refreshing: true});
+    this.loadBets().then(() => {
+     this.setState({refreshing: false});
+   });
+ }
 
   render() {
     return(
       <View style={styles.container}>
         <StatusBar barStyle="light-content"/>
         {this.state.loading && <Loader />}
-        <ScrollView>
+        <ScrollView
+          refreshControl={
+            <RefreshControl
+              refreshing={this.state.refreshing}
+              onRefresh={this._onRefresh.bind(this)}
+            />
+          }
+        >
           {this.state.matches.map(match => (
             <Card
               titleStyle={styles.subHeader}
@@ -108,7 +123,11 @@ export default class BetsMatchComponent extends React.Component {
               containerStyle={styles.container}
               key={`${match.awayTeamId}-${match.homeTeamId}`}
               title={this.getHeader(match)}>
-              {match.id && <Text style={styles.normalText}>Tip: {match.homeScore}:{match.awayScore}{match.overtime ? 'P' : ''}, {match.scorer}</Text>}
+              <Text style={styles.normalText}>{moment(new Date(match.matchDateTime)).calendar()}</Text>
+              {match.id &&
+                <Text style={styles.normalText}>
+                Tip: {match.homeScore}:{match.awayScore}{match.overtime ? 'P' : ''}, {match.scorer} Body: {match.totalPoints}
+                </Text>}
               {!match.betting && <Button onPress={() => {
                 match.betting = true
                 this.setState({matches: this.state.matches})
@@ -142,11 +161,11 @@ export default class BetsMatchComponent extends React.Component {
                     </View>
                   </View>
 
-                  <CheckBox
+                  {/*<CheckBox
                     title='Remíza'
                     onPress={value => this.handleBetChange(match, !match.overtime, undefined, 'overtime')}
                     checked={match.overtime}
-                  />
+                  />*/}
 
                   <Button title="Vybrat střelce" onPress={() => {
                     this.setState({ pickerVisible: true, currentBet: match })

@@ -3,6 +3,8 @@ import { View, AsyncStorage, KeyboardAvoidingView } from 'react-native';
 import createNavigation from './navigation'
 import { Navigation } from 'react-navigation';
 import moment from 'moment';
+import AppCenter from 'appcenter';
+import UserService from './services/user.service'
 import 'moment/locale/cs'
 
 moment.locale('cs')
@@ -31,16 +33,18 @@ export default class App extends React.Component {
   }
 
   componentDidMount() {
-    AsyncStorage.getItem('token') && AsyncStorage.getItem('token').then(token => {
+    AsyncStorage.getItem('token') && AsyncStorage.getItem('token').then(async token => {
+      const currentUser = await UserService.getCurrentUser()
+      const pushId = await AppCenter.getInstallId()
+
+      if (!currentUser.pushId || pushId !== currentUser.pushId) {
+        UserService.update({ pushId }, currentUser.id)
+      }
+
+      console.log(pushId, currentUser)
       this.setState({
         isLoggedIn: token && token.length > 0
       })
-    })
-  }
-
-  setUser(user) {
-    this.setState({
-      user,
     })
   }
 

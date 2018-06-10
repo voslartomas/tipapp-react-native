@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, ScrollView, Dimensions, Button, TextInput, Picker, StyleSheet, KeyboardAvoidingView } from 'react-native';
+import { View, ScrollView, Dimensions, Button, TextInput, Picker, StyleSheet, KeyboardAvoidingView, RefreshControl } from 'react-native';
 import { Text, Card } from 'react-native-elements';
 import moment from 'moment';
 import codePush, { UpdateState } from 'react-native-code-push';
@@ -111,17 +111,17 @@ export default class BetsMatchComponent extends React.Component {
     await this.loadBets()
   }
 
-  getBetTitle(single) {
+  getBetTitle(special) {
     let title
-    switch (single.type) {
+    switch (special.type) {
       case 1:
-        title = single.playerBet
+        title = special.playerBet
         break;
       case 2:
-        title = single.teamBet
+        title = special.teamBet
         break;
       case 3:
-        title = single.valueBet
+        title = special.valueBet
         break;
     }
 
@@ -129,14 +129,45 @@ export default class BetsMatchComponent extends React.Component {
   }
 
   getHeader(special) {
-    return `${special.name} ${moment(new Date(special.endDate)).fromNow()}`
+    return `${special.name} - ${this.getResult(special)}`
   }
+
+  getResult(single) {
+    let result
+    switch (single.type) {
+      case 1:
+        result = single.player
+        break;
+      case 2:
+        result = single.team
+        break;
+      case 3:
+        result = single.value
+        break;
+    }
+    console.log(result)
+    return result
+  }
+
+  _onRefresh() {
+   this.setState({refreshing: true});
+    this.loadBets().then(() => {
+     this.setState({refreshing: false});
+   });
+ }
 
   render() {
     return(
       <View style={styles.container}>
         {this.state.loading && <Loader />}
-        <ScrollView>
+        <ScrollView
+        refreshControl={
+          <RefreshControl
+            refreshing={this.state.refreshing}
+            onRefresh={this._onRefresh.bind(this)}
+          />
+        }
+        >
           <KeyboardAvoidingView>
             {this.state.matches.map(match => (
               <Card
@@ -145,7 +176,9 @@ export default class BetsMatchComponent extends React.Component {
                 containerStyle={styles.container}
                 key={`${match.singleId}`}
                 title={this.getHeader(match)}>
-                {(match.id || this.getBetTitle(match)) && <Text style={styles.normalText}>Tip: {this.getBetTitle(match)}</Text>}
+                <Text style={styles.normalText}>{moment(new Date(match.endDate)).calendar()}</Text>
+                {(match.id || this.getBetTitle(match)) &&
+                  <Text style={styles.normalText}>Tip: {this.getBetTitle(match)} Body: {match.totalPoints}</Text>}
                 {this.canBet(match) &&
                   (<View>
                     {match.type === 3 && <TextInput
