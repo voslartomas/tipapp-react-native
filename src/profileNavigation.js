@@ -1,8 +1,8 @@
 import {
   StackNavigator
 } from 'react-navigation';
-import { ProfileComponent } from './components/account/profile.component';
-import { UserFormComponent } from './components/account/userForm.component';
+import ProfileComponent from './components/account/profile.component';
+import UserFormComponent from './components/account/userForm.component';
 
 export default createProfileNavigation = () =>  {
   const nav = StackNavigator({
@@ -27,7 +27,7 @@ export default createProfileNavigation = () =>  {
       }
     },
     {
-      initialRouteName: ProfileNavigation
+      initialRouteName: 'ProfileNavigation'
     }
   )
 }

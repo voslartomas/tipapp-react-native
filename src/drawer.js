@@ -6,7 +6,7 @@ import LogoutComponent from './components/logout.component';
 import ProfileComponent from './components/account/profile.component';
 import UserFormComponent from './components/account/userForm.component';
 import BetsSerieComponent from './components/dashboard/bets.serie.component';
-import createProfileNavigation from '../src/profileNavigation'
+import createProfileNavigation from './profileNavigation'
 import styles from './styles'
 
 export default async (logout) => {
@@ -21,7 +21,7 @@ export default async (logout) => {
   })
   const ProfileNav = createProfileNavigation()
   items.profile = {
-    screen: <ProfileNav/>,
+    screen: props => <ProfileNav />,
     navigationOptions: {
       title: 'Profile',
     },
