@@ -23,14 +23,14 @@ export default async (logout) => {
   items.profile = {
     screen: props => <ProfileNav />,
     navigationOptions: {
-      title: 'Profile',
+      title: 'Profil',
     },
   }
 
   items.logout = {
     screen: props => <LogoutComponent {...props} logout={logout} />,
     navigationOptions: {
-      title: 'Logout',
+      title: 'Odhlásit se',
     },
   }
 

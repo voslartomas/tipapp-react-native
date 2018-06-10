@@ -3,19 +3,30 @@ import {
 } from 'react-navigation';
 import ProfileComponent from './components/account/profile.component';
 import UserFormComponent from './components/account/userForm.component';
+import styles from './styles'
 
 export default createProfileNavigation = () =>  {
   const nav = StackNavigator({
     Profile: {
       screen: ProfileComponent,
       navigationOptions: {
-        title: 'Profil'
+        title: 'Profil',
+        headerTintColor: 'white',
+        headerStyle: styles.headerBar,
+        styles: {
+          statusBarTextColorScheme: 'dark',
+        }
       }
     },
     EditProfile: {
       screen: UserFormComponent,
       navigationOptions: {
-        title: 'Editace Profilu'
+        title: 'Editace Profilu',
+        headerTintColor: 'white',
+        headerStyle: styles.headerBar,
+        styles: {
+          statusBarTextColorScheme: 'dark',
+        }
       }
     }
   });
@@ -27,7 +38,11 @@ export default createProfileNavigation = () =>  {
       }
     },
     {
-      initialRouteName: 'ProfileNavigation'
+      initialRouteName: 'ProfileNavigation',
+      headerMode: 'none',
+      navigationOptions: {
+        headerVisible: false,
+      }
     }
   )
 }
