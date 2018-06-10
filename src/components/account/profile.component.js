@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View, ScrollView, Dimensions, Button, Alert } from 'react-native';
 import { Text, Card } from 'react-native-elements';
 import UserService from '../../services/user.service'
+import styles from '../../styles';
 
 export default class ProfileComponent extends Component {
   constructor(props) {
@@ -42,11 +43,12 @@ export default class ProfileComponent extends Component {
   render() {
 
     return (
-      <View>
-        <Text>PROFIL</Text>
-        <Text>{this.state.user.firstName} {this.state.user.lastName}</Text>
-        <Text>{this.state.user.email}</Text>
-        <Text>{this.state.user.mobileNumber}</Text>
+      <View style={styles.container}>
+        <Text style={styles.normalText}>PROFIL</Text>
+        <Text style={styles.normalText}>{this.state.user.firstName} {this.state.user.lastName}</Text>
+        <Text style={styles.normalText}>{this.state.user.email}</Text>
+        <Text style={styles.normalText}>{this.state.user.mobileNumber}</Text>
+        <Button title="Editovat" onPress={() => { this.props.navigation.navigate('EditProfile') } }></Button>
         <Button title="Smazat" onPress={() => this.deleteUser(this.state.user.userId)}></Button>
       </View>
     );
