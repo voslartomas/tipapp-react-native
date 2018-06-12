@@ -145,8 +145,8 @@ export default class BetsMatchComponent extends React.Component {
         result = single.value
         break;
     }
-    console.log(result)
-    return result
+
+    return result === null ? '?' : result
   }
 
   _onRefresh() {

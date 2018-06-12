@@ -3,6 +3,7 @@ package com.tipappreactnative;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.dieam.reactnativepushnotification.ReactNativePushNotificationPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.microsoft.codepush.react.CodePush;
 import com.microsoft.appcenter.reactnative.push.AppCenterReactNativePushPackage;
@@ -36,6 +37,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new ReactNativePushNotificationPackage(),
             new VectorIconsPackage(),
             new CodePush("oxu2OGU0G7NioqShn-mHCw9Xg69oSkygMjdTM", getApplicationContext(), BuildConfig.DEBUG),
             new AppCenterReactNativePushPackage(MainApplication.this),

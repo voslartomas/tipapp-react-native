@@ -22,6 +22,8 @@
 {
   NSURL *jsCodeLocation;
 
+  [AppCenterReactNative register];  // Initialize AppCenter 
+
   [AppCenterReactNativePush register];  // Initialize AppCenter push
 
   [AppCenterReactNativeCrashes registerWithAutomaticProcessing];  // Initialize AppCenter crashes

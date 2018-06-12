@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { View, ScrollView, Dimensions, Button, TextInput, Picker, StyleSheet, StatusBar, RefreshControl } from 'react-native';
-import { Text, Card, CheckBox } from 'react-native-elements';
+import { View, ScrollView, Dimensions, Button, TextInput, Picker, StyleSheet, StatusBar, RefreshControl, Switch } from 'react-native';
+import { Text, Card, CheckBox, Header } from 'react-native-elements';
 import moment from 'moment';
 import codePush, { UpdateState } from 'react-native-code-push';
 import Loader from '../shared/loader.component'
@@ -24,6 +24,7 @@ export default class BetsMatchComponent extends React.Component {
       loading: true,
       pickerVisible: false,
       refreshing: false,
+      history: false,
       currentBet: undefined
     }
   }
@@ -45,7 +46,14 @@ export default class BetsMatchComponent extends React.Component {
   }
 
   async loadBets() {
-    const matches = await LeagueService.getBetsMatches(this.props.leagueId)
+    let matches
+    if (this.state.history) {
+      matches = await LeagueService.getBetsMatchesHistory(this.props.leagueId)
+    } else {
+      matches = await LeagueService.getBetsMatches(this.props.leagueId)
+    }
+
+    this.setState({ loading: false })
 
     const teams = []
     for (const match of matches) {
@@ -85,8 +93,7 @@ export default class BetsMatchComponent extends React.Component {
     await UserBetsMatchService.put(this.props.leagueId, {matchId: match.matchId1,
       homeScore: match.homeScore || 0,
       awayScore: match.awayScore || 0,
-      scorerId: match.scorerId,
-      overtime: match.overtime
+      scorerId: match.scorerId
     }, id)
 
     await this.loadBets()
@@ -103,11 +110,40 @@ export default class BetsMatchComponent extends React.Component {
    });
  }
 
+ componentDidUpdate(prevProps, prevState, snapshot) {
+   if (prevState.history !== this.state.history) {
+     this.loadBets()
+   }
+ }
+
+ switchHistory(value) {
+   this.setState({ history: value, loading: true })
+ }
+
+ testComp() {
+   return (<View style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}>
+    <Text style={styles.smallText}>Následující</Text>
+    <Switch
+       style={{ transform: [{ scaleX: .8 }, { scaleY: .8 }] }}
+       onValueChange = {(value) => this.switchHistory(value)}
+       value = {this.state.history}/>
+    <Text style={styles.smallText}>Předchozí</Text>
+     </View>)
+ }
+
   render() {
     return(
       <View style={styles.container}>
         <StatusBar barStyle="light-content"/>
+
+        <Header
+          outerContainerStyles={styles.containerNoFlex}
+          placement="left"
+          centerComponent={this.testComp()}
+        />
+
         {this.state.loading && <Loader />}
+
         <ScrollView
           refreshControl={
             <RefreshControl
@@ -116,6 +152,9 @@ export default class BetsMatchComponent extends React.Component {
             />
           }
         >
+
+          {this.state.matches.length === 0 && <Text style={styles.normalText}>Žádné zápasy</Text>}
+
           {this.state.matches.map(match => (
             <Card
               titleStyle={styles.subHeader}

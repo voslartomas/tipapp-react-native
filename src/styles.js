@@ -13,6 +13,9 @@ export default {
     justifyContent: 'center',
     backgroundColor: '#202020',
   },
+  containerNoFlex: {
+    backgroundColor: '#202020',
+  },
   error: {
     color: '#ff2233',
     textAlign: 'center'
