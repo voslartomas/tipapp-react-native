@@ -67,7 +67,7 @@ export default class BetsMatchComponent extends React.Component {
     this.setState({ matches, leagueId: this.props.leagueId, players, loading: false })
   }
 
-  async handleBetChange(match, value, scorerId = undefined, type) {
+  async handleBetChange(match, value, scorerId = undefined, type, player) {
     if (scorerId) {
       match = this.state.currentBet
       match.scorerId = scorerId
@@ -76,6 +76,10 @@ export default class BetsMatchComponent extends React.Component {
     match.homeScore = type === 'homeScore' ? parseInt(value) : match.homeScore || 0
     match.awayScore = type === 'awayScore' ? parseInt(value) : match.awayScore || 0
     match.overtime = type === 'overtime' ? value : match.overtime || false
+
+    if (player) {
+        match.selectedScorer = `${player.player.firstName} ${player.player.lastName}`
+    }
 
     this.setState({ matches: this.state.matches })
   }
@@ -88,6 +92,7 @@ export default class BetsMatchComponent extends React.Component {
     const id = match.id || 0
 
     match.loading = true
+    match.selectedScorer = undefined
     this.setState({})
 
     await UserBetsMatchService.put(this.props.leagueId, {matchId: match.matchId1,
@@ -130,6 +135,10 @@ export default class BetsMatchComponent extends React.Component {
     <Text style={styles.smallText}>Předchozí</Text>
      </View>)
  }
+
+getStylePlayer(player) {
+  return player.bestScorer ? {color: 'white', backgroundColor: 'black', fontSize: 20} : {fontSize: 20}
+}
 
   render() {
     return(
@@ -206,6 +215,7 @@ export default class BetsMatchComponent extends React.Component {
                     checked={match.overtime}
                   />*/}
 
+                  <Text style={styles.normalText}>{match.selectedScorer && match.selectedScorer}</Text>
                   <Button title="Vybrat střelce" onPress={() => {
                     this.setState({ pickerVisible: true, currentBet: match })
                   }} />
@@ -221,11 +231,19 @@ export default class BetsMatchComponent extends React.Component {
         <ModalFilterPicker
             visible={this.state.pickerVisible}
             options={this.getPlayers(this.state.currentBet).map(player => {
-              return {key: player.id, label: `${player.player.firstName} ${player.player.lastName} ${player.leagueTeam.team.shortcut}`
+              return {key: player.id,
+                label: (
+                  <View style={{fontSize: 20}}>
+                    <Text style={this.getStylePlayer(player)}>{player.player.position} {player.player.firstName} {player.player.lastName} {player.leagueTeam.team.shortcut}</Text>
+                    <Text>Z: {player.seasonGames}, G: {player.seasonGoals}, <Text >{player.clubName}</Text></Text>
+                  </View>
+                )
             }})}
             onSelect={(value) => {
                 this.setState({ pickerVisible: false })
-                this.handleBetChange(undefined, undefined, value, 'scorer')
+                const player = this.state.players.find(player => player.id === value)
+
+                this.handleBetChange(undefined, undefined, value, 'scorer', player)
             }}
             onCancel={(el) => {
                 this.setState({ pickerVisible: false })
