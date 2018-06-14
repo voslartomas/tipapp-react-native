@@ -164,7 +164,7 @@ getStylePlayer(player) {
 
           {this.state.matches.length === 0 && <Text style={styles.normalText}>Žádné zápasy</Text>}
 
-          {this.state.matches.map(match => (
+          {this.state.matches.slice(0, 10).map(match => (
             <Card
               titleStyle={styles.subHeader}
               dividerStyle={{ backgroundColor: styles.secondary }}
@@ -233,15 +233,15 @@ getStylePlayer(player) {
             options={this.getPlayers(this.state.currentBet).map(player => {
               return {key: player.id,
                 label: (
-                  <View style={{fontSize: 20}}>
+                  <Text style={{fontSize: 14, flex: 1, flexDirection: 'row'}}>
                     <Text style={this.getStylePlayer(player)}>{player.player.position} {player.player.firstName} {player.player.lastName} {player.leagueTeam.team.shortcut}</Text>
-                    <Text>Z: {player.seasonGames}, G: {player.seasonGoals}, <Text >{player.clubName}</Text></Text>
-                  </View>
+                    <Text>{"\n"}Z: {player.seasonGames}, G: {player.seasonGoals}, {player.clubName}</Text>
+                  </Text>
                 )
             }})}
             onSelect={(value) => {
                 this.setState({ pickerVisible: false })
-                const player = this.state.players.find(player => player.id === value)
+                const player = this.state.players.find(player =>   player.id === value)
 
                 this.handleBetChange(undefined, undefined, value, 'scorer', player)
             }}
