@@ -43,9 +43,9 @@ export default class ProfileComponent extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.normalText}>PROFIL</Text>
         <Text style={styles.normalText}>{this.state.user.firstName} {this.state.user.lastName}</Text>
-        <Button title="Editovat" onPress={() => { this.props.navigation.navigate('EditProfile' , { loadUser: () => { this.loadUser() } }) } }></Button>
+        <Button title="Editovat" style={{marginBottom: "5px"}} onPress={() => { this.props.navigation.navigate('EditProfile' , { loadUser: () => { this.loadUser() } }) } }></Button>
+        <Button title="Změnit heslo" style={{marginBottom: "5px"}} onPress={() => { this.props.navigation.navigate('ChangePassword' , { loadUser: () => { this.loadUser() } }) } }></Button>
         <Button title="Smazat" onPress={() => this.deleteUser(this.state.user.userId)}></Button>
       </View>
     );
