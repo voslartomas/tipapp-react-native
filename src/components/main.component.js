@@ -9,7 +9,7 @@ import { TabNavigator } from 'react-navigation';
 export default (league) => {
   return TabNavigator({
     Dashboard: {
-      screen: TabNavigator({
+      screen: props => TabNavigator({
         Matches: {screen: props => <BetsMatchComponent leagueId={league.leagueId} />},
         Series: {screen: props => <BetsSerieComponent leagueId={league.leagueId}/>}
     })},
