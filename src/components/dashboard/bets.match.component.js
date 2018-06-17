@@ -132,7 +132,6 @@ getBetButton(match) {
 }
 
   render() {
-    console.log(this.state.matches)
     return(
       <View style={styles.container}>
         <StatusBar barStyle="light-content"/>
@@ -172,7 +171,13 @@ getBetButton(match) {
                 this.setState({matches: this.state.matches})
                 }
               } title={this.getBetButton(match)} />}
-              {!this.canBet(match) && match.isEvaluated && <Text style={styles.normalText}>Body: {match.totalPoints}</Text>}
+
+              {!this.canBet(match) && match.isEvaluated &&
+                <Text
+                onPress={() => this.props.navigation.navigate('UserBetsMatch', { leagueId: this.props.leagueId, match })}
+                style={styles.normalText}>Body: {match.totalPoints}
+                </Text>}
+
               {this.canBet(match) && match.betting &&
                 (<View>
                   <View style={{flexDirection: 'row'}}>

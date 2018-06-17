@@ -4,8 +4,10 @@ import DashboardComponent from './dashboard/dashboard.component'
 import BetsMatchComponent from './dashboard/bets.match.component';
 import BetsSerieComponent from './dashboard/bets.serie.component';
 import BetsSpecialComponent from './dashboard/bets.special.component';
+import UserBetsMatchComponent from './dashboard/userBetsMatch.component'
+import UserBetsSingleComponent from './dashboard/userBetsSingle.component'
 import styles from '../styles'
-import { TabNavigator } from 'react-navigation';
+import { TabNavigator, StackNavigator } from 'react-navigation';
 
 const dashboardOptions = {
   lazy: true,
@@ -23,38 +25,52 @@ const mainOptions = Object.assign({}, dashboardOptions)
 mainOptions.tabBarPosition = 'bottom'
 
 export default (league) => {
-  return TabNavigator({
-    Dashboard: {
+  return StackNavigator({
+    Home: {
       screen: TabNavigator({
-        Matches: {
-          screen: props => <BetsMatchComponent leagueId={league.leagueId} />,
-          navigationOptions: {
-            title: 'Zápasy'
-          }
+        Dashboard: {
+          screen: TabNavigator({
+            Matches: {
+              screen: props => <BetsMatchComponent {...props} leagueId={league.leagueId} />,
+              navigationOptions: {
+                title: 'Zápasy'
+              }
+            },
+            /*Series: {
+              screen: props => <BetsSerieComponent leagueId={league.leagueId}/>,
+              navigationOptions: {
+                title: 'Série'
+              }
+            },*/
+            Singles: {
+              screen: props => <BetsSpecialComponent {...props} leagueId={league.leagueId}/>,
+              navigationOptions: {
+                title: 'Speciální'
+              }
+            },
         },
-        /*Series: {
-          screen: props => <BetsSerieComponent leagueId={league.leagueId}/>,
-          navigationOptions: {
-            title: 'Série'
-          }
-        },*/
-        Singles: {
-          screen: props => <BetsSpecialComponent leagueId={league.leagueId}/>,
-          navigationOptions: {
-            title: 'Speciální'
-          }
-        },
-    },
-    dashboardOptions),
-    navigationOptions: {
-      title: 'Tipy'
-    }
+        dashboardOptions),
+        navigationOptions: {
+          title: 'Tipy'
+        }
+      },
+      Leadeboard: {
+        screen: props => <LeaderboardComponent leagueId={league.leagueId} />,
+        navigationOptions: {
+          title: 'Žebříček'
+        }
+      },
+    }, mainOptions)
   },
-    Leadeboard: {
-      screen: props => <LeaderboardComponent leagueId={league.leagueId} />,
-      navigationOptions: {
-        title: 'Žebříček'
-      }
-    },
-  }, mainOptions)
+  UserBetsMatch: {
+    screen: props => <UserBetsMatchComponent {...props} />
+  },
+  UserBetsSingle: {
+    screen: props => <UserBetsSingleComponent {...props} />
+  },
+  }, {
+    initialRouteName: 'Home',
+    mode: 'modal',
+    headerMode: 'none',
+  })
 }

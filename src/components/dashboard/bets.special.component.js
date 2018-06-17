@@ -179,7 +179,11 @@ export default class BetsMatchComponent extends React.Component {
                 <Text style={styles.normalText}>{moment(new Date(match.endDate)).calendar()}</Text>
                 {(match.id || this.getBetTitle(match)) &&
                   <Text style={styles.normalText}>Tip: {this.getBetTitle(match)}</Text>}
-                {match.id && <Text>Body: {match.totalPoints}</Text>}
+                {match.id &&
+                  <Text
+                  style={styles.normalText}
+                  onPress={() => this.props.navigation.navigate('UserBetsSingle', { leagueId: this.props.leagueId, single: match })}>
+                  Body: {match.totalPoints}</Text>}
                 {this.canBet(match) &&
                   (<View>
                     {match.type === 3 && <TextInput

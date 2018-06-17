@@ -35,13 +35,13 @@ export default createNavigation = (isLoggedIn, login, logout) =>  {
       navigationOptions: ({ navigation, screenProps }) => ({
         title: 'NEYMAR',
         headerTintColor: 'white',
-        headerLeft: <Text onPress={() => navigation.navigate('DrawerOpen')}>Menu</Text>,
+        headerLeft: <Text onPress={() => navigation.navigate('DrawerToggle')}>Menu</Text>,
         headerStyle: styles.headerBar,
         styles: {
           statusBarTextColorScheme: 'dark',
         }
       }),
-    },
+    }
   })
 
   return StackNavigator(

@@ -24,4 +24,16 @@ export default class LeagueService {
 
     return response.data
   }
+
+  static async getUserBetsMatch(leagueId, matchId) {
+    const response = await api.get(`api/leagues/${leagueId}/users/bets/match/${matchId}`)
+
+    return response.data
+  }
+
+  static async getUserBetsSingle(leagueId, singleId) {
+    const response = await api.get(`api/leagues/${leagueId}/users/bets/single/${singleId}`)
+
+    return response.data
+  }
 }
