@@ -13,6 +13,11 @@ export default {
     justifyContent: 'center',
     backgroundColor: '#202020',
   },
+  containerTop: {
+    flex: 1,
+    justifyContent: 'flex-start',
+    backgroundColor: '#202020',
+  },
   containerNoFlex: {
     backgroundColor: '#202020',
   },

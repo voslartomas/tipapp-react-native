@@ -9,7 +9,9 @@ export default class LeaderboardComponent extends React.Component {
 
     this.state = {
       leaderboard: [],
-      loading: true
+      loading: true,
+      previousPlayer: undefined,
+      previousPosition: 0
     }
   }
 
@@ -32,6 +34,26 @@ export default class LeaderboardComponent extends React.Component {
    });
  }
 
+ getPosition(player, index) {
+   const previousPosition = this.state.previousPosition
+   const previousPlayer = this.state.previousPlayer
+   let position
+
+   if (index === 0) {
+     position = index + 1
+   }
+
+   if (previousPlayer && player.totalPoints === previousPlayer.totalPoints) {
+     position = previousPosition
+   } else {
+     position = index + 1
+   }
+
+   this.state.previousPlayer = player
+   this.state.previousPosition = position
+   return position
+ }
+
   render() {
     return(
       <View style={styles.container}>
@@ -45,7 +67,7 @@ export default class LeaderboardComponent extends React.Component {
         >
           {this.state.leaderboard.map((player, i) => (
             <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-between'}}>
-              <Text style={styles.normalText}>{i+1}.</Text>
+              <Text style={styles.normalText}>{this.getPosition(player, i)}.</Text>
               <Text style={styles.normalText}>{player.firstName} {player.lastName}</Text>
               <Text style={styles.normalText}>{player.totalPoints}</Text>
             </View>

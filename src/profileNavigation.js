@@ -11,50 +11,34 @@ export default createProfileNavigation = () =>  {
     Profile: {
       screen: ProfileComponent,
       navigationOptions: {
-        title: 'Profil',
         headerTintColor: 'white',
-        headerStyle: styles.headerBar,
+        header: false,
         styles: {
-          statusBarTextColorScheme: 'dark',
+          statusBarTextColorScheme: 'light',
         }
       }
     },
     EditProfile: {
       screen: UserFormComponent,
       navigationOptions: {
-        title: 'Editace Profilu',
         headerTintColor: 'white',
-        headerStyle: styles.headerBar,
         styles: {
-          statusBarTextColorScheme: 'dark',
+          statusBarTextColorScheme: 'light',
         }
       }
     },
     ChangePassword: {
       screen: PasswordComponent,
       navigationOptions: {
-        title: 'Změna hesla',
         headerTintColor: 'white',
-        headerStyle: styles.headerBar,
         styles: {
-          statusBarTextColorScheme: 'dark',
+          statusBarTextColorScheme: 'light',
         }
       }
     }
+  }, {
+    headerMode: 'none'
   });
 
-  return StackNavigator(
-    {
-      ProfileNavigation: {
-        screen: nav
-      }
-    },
-    {
-      initialRouteName: 'ProfileNavigation',
-      headerMode: 'none',
-      navigationOptions: {
-        headerVisible: false,
-      }
-    }
-  )
+  return nav
 }

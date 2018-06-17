@@ -40,10 +40,17 @@ export default class ProfileComponent extends Component {
     this.setState({ user: currentUser })
   }
 
+  getPluralizedHours() {
+    const h = this.state.user.notifyHours
+
+    return h > 4 ? 'hodin' : h === 1 ? 'hodina' : 'hodiny'
+  }
+
   render() {
     return (
       <View style={styles.container}>
         <Text style={styles.normalText}>{this.state.user.firstName} {this.state.user.lastName}</Text>
+        <Text style={styles.normalText}>Upozornit {this.state.user.notifyHours} {this.getPluralizedHours()} před zápasem.</Text>
         <Button title="Editovat" style={{marginBottom: "5px"}} onPress={() => { this.props.navigation.navigate('EditProfile' , { loadUser: () => { this.loadUser() } }) } }></Button>
         <Button title="Změnit heslo" style={{marginBottom: "5px"}} onPress={() => { this.props.navigation.navigate('ChangePassword' , { loadUser: () => { this.loadUser() } }) } }></Button>
         {/*<Button title="Smazat" onPress={() => this.deleteUser(this.state.user.userId)}></Button>*/}

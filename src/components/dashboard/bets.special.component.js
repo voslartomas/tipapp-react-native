@@ -178,7 +178,8 @@ export default class BetsMatchComponent extends React.Component {
                 title={this.getHeader(match)}>
                 <Text style={styles.normalText}>{moment(new Date(match.endDate)).calendar()}</Text>
                 {(match.id || this.getBetTitle(match)) &&
-                  <Text style={styles.normalText}>Tip: {this.getBetTitle(match)} Body: {match.totalPoints}</Text>}
+                  <Text style={styles.normalText}>Tip: {this.getBetTitle(match)}</Text>}
+                {match.id && <Text>Body: {match.totalPoints}</Text>}
                 {this.canBet(match) &&
                   (<View>
                     {match.type === 3 && <TextInput

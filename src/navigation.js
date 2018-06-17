@@ -2,6 +2,7 @@ import React from 'react';
 import LoginFormComponent from './components/account/loginForm.component';
 import RegisterFormComponent from './components/account/registerForm.component';
 import SecuredComponent from './components/secured.component';
+import { Text } from 'react-native'
 import {
   StackNavigator
 } from 'react-navigation';
@@ -31,14 +32,15 @@ export default createNavigation = (isLoggedIn, login, logout) =>  {
   const SignedIn = StackNavigator({
     Home: {
       screen: props => <SecuredComponent {...props} logout={logout} />,
-      navigationOptions: {
+      navigationOptions: ({ navigation, screenProps }) => ({
         title: 'NEYMAR',
         headerTintColor: 'white',
+        headerLeft: <Text onPress={() => navigation.navigate('DrawerOpen')}>Menu</Text>,
         headerStyle: styles.headerBar,
         styles: {
           statusBarTextColorScheme: 'dark',
         }
-      },
+      }),
     },
   })
 

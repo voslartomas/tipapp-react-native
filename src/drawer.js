@@ -40,6 +40,7 @@ export default async (logout) => {
       // initialRouteName: 'First',
       drawerPosition: 'left',
       drawerBackgroundColor: styles.primary,
+      headerVisible: false,
       contentOptions: {
         inactiveTintColor: 'white'
       }

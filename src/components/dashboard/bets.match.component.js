@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, ScrollView, Dimensions, Button, TextInput, Picker, StyleSheet, StatusBar, RefreshControl, Switch } from 'react-native';
+import { View, ScrollView, Dimensions, Button, TextInput, Picker, StyleSheet, StatusBar, RefreshControl } from 'react-native';
 import { Text, Card, CheckBox, Header } from 'react-native-elements';
 import moment from 'moment';
 import codePush, { UpdateState } from 'react-native-code-push';
@@ -53,8 +53,6 @@ export default class BetsMatchComponent extends React.Component {
       matches = await LeagueService.getBetsMatches(this.props.leagueId)
     }
 
-    this.setState({ loading: false })
-
     const teams = []
     for (const match of matches) {
       if (this.canBet(match)) {
@@ -64,7 +62,7 @@ export default class BetsMatchComponent extends React.Component {
 
     const players = await PlayerService.getPlayersByTeams(this.props.leagueId, teams)
 
-    this.setState({ matches, leagueId: this.props.leagueId, players, loading: false })
+    this.setState({ matches, leagueId: this.props.leagueId, players, loading: false, refreshing: false })
   }
 
   async handleBetChange(match, value, scorerId = undefined, type, player) {
@@ -73,8 +71,8 @@ export default class BetsMatchComponent extends React.Component {
       match.scorerId = scorerId
     }
 
-    match.homeScore = type === 'homeScore' ? parseInt(value) : match.homeScore || 0
-    match.awayScore = type === 'awayScore' ? parseInt(value) : match.awayScore || 0
+    match.homeScore = type === 'homeScore' ? parseInt(value) || 0 : match.homeScore || 0
+    match.awayScore = type === 'awayScore' ? parseInt(value) || 0 : match.awayScore || 0
     match.overtime = type === 'overtime' ? value : match.overtime || false
 
     if (player) {
@@ -125,35 +123,28 @@ export default class BetsMatchComponent extends React.Component {
    this.setState({ history: value, loading: true })
  }
 
- testComp() {
-   return (<View style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}>
-    <Text style={styles.smallText}>Následující</Text>
-    <Switch
-       style={{ transform: [{ scaleX: .8 }, { scaleY: .8 }] }}
-       onValueChange = {(value) => this.switchHistory(value)}
-       value = {this.state.history}/>
-    <Text style={styles.smallText}>Předchozí</Text>
-     </View>)
- }
-
 getStylePlayer(player) {
   return player.bestScorer ? {color: 'white', backgroundColor: 'black', fontSize: 20} : {fontSize: 20}
 }
 
+getBetButton(match) {
+  return !match.id ? 'Vsadit' : 'Upravit sázku'
+}
+
   render() {
+    console.log(this.state.matches)
     return(
       <View style={styles.container}>
         <StatusBar barStyle="light-content"/>
 
-        <Header
-          outerContainerStyles={styles.containerNoFlex}
-          placement="left"
-          centerComponent={this.testComp()}
-        />
+        <View style={{padding: 10}}>
+         {this.state.history && <Text style={styles.normalText} onPress={() => this.switchHistory(false)}>Zobrazit nadcházející</Text>}
+         {!this.state.history && <Text style={styles.normalText} onPress={() => this.switchHistory(true)}>Zobrazit historii</Text>}
+        </View>
 
         {this.state.loading && <Loader />}
 
-        <ScrollView
+        <ScrollView keyboardShouldPersistTaps="always" keyboardDismissMode="on-drag"
           refreshControl={
             <RefreshControl
               refreshing={this.state.refreshing}
@@ -162,25 +153,26 @@ getStylePlayer(player) {
           }
         >
 
-          {this.state.matches.length === 0 && <Text style={styles.normalText}>Žádné zápasy</Text>}
+          {this.state.matches.length === 0 && !this.state.loading && <Text style={styles.normalText}>Žádné zápasy</Text>}
 
           {this.state.matches.slice(0, 10).map(match => (
             <Card
               titleStyle={styles.subHeader}
               dividerStyle={{ backgroundColor: styles.secondary }}
               containerStyle={styles.container}
-              key={`${match.awayTeamId}-${match.homeTeamId}`}
+              key={`${match.matchId1}`}
               title={this.getHeader(match)}>
               <Text style={styles.normalText}>{moment(new Date(match.matchDateTime)).calendar()}</Text>
               {match.id &&
                 <Text style={styles.normalText}>
-                Tip: {match.homeScore}:{match.awayScore}{match.overtime ? 'P' : ''}, {match.scorer} Body: {match.totalPoints}
+                Tip: {match.homeScore}:{match.awayScore}{match.overtime ? 'P' : ''}, {match.scorer}
                 </Text>}
-              {!match.betting && <Button onPress={() => {
+              {this.canBet(match) && !match.betting && <Button onPress={() => {
                 match.betting = true
                 this.setState({matches: this.state.matches})
                 }
-              } title="Vsadit" />}
+              } title={this.getBetButton(match)} />}
+              {!this.canBet(match) && match.isEvaluated && <Text style={styles.normalText}>Body: {match.totalPoints}</Text>}
               {this.canBet(match) && match.betting &&
                 (<View>
                   <View style={{flexDirection: 'row'}}>
@@ -188,7 +180,8 @@ getStylePlayer(player) {
                       <TextInput
                         style={[styles.input, {justifyContent: 'flex-start'}]}
                         value={match.homeScore}
-                        returnKeyType="next"
+                        returnKeyType="done"
+                        onSubmitEditing={() => { this.inputRefs[`${match.id1}`].focus(); }}
                         keyboardAppearance="dark"
                         keyboardType="numeric"
                         name="homeScore"
@@ -200,6 +193,7 @@ getStylePlayer(player) {
                       <TextInput
                         style={[styles.input, {justifyContent: 'flex-end'}]}
                         value={match.awayScore}
+                        ref={(input) => { this.inputRefs[`${match.id1}`] = input }}
                         keyboardAppearance="dark"
                         returnKeyType="done"
                         keyboardType="numeric"
