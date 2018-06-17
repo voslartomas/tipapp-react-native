@@ -2,6 +2,7 @@ import React from 'react';
 import LoginFormComponent from './components/account/loginForm.component';
 import RegisterFormComponent from './components/account/registerForm.component';
 import SecuredComponent from './components/secured.component';
+import Icon from 'react-native-vector-icons/FontAwesome'
 import { Text } from 'react-native'
 import {
   StackNavigator
@@ -29,13 +30,17 @@ export default createNavigation = (isLoggedIn, login, logout) =>  {
     },
   });
 
+  let drawerNavigation = undefined
+  const setNavigation = (nav) => {
+    drawerNavigation = nav
+  }
   const SignedIn = StackNavigator({
     Home: {
-      screen: props => <SecuredComponent {...props} logout={logout} />,
+      screen: props => <SecuredComponent {...props} setNavigation={setNavigation} logout={logout} />,
       navigationOptions: ({ navigation, screenProps }) => ({
         title: 'NEYMAR',
         headerTintColor: 'white',
-        headerLeft: <Text onPress={() => navigation.navigate('DrawerToggle')}>Menu</Text>,
+        headerLeft: <Text style={{paddingLeft: 10}} onPress={() => drawerNavigation.toggleDrawer()}><Icon name="bars" size={30} color="#fff" /></Text>,
         headerStyle: styles.headerBar,
         styles: {
           statusBarTextColorScheme: 'dark',

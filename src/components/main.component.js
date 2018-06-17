@@ -24,14 +24,14 @@ const dashboardOptions = {
 const mainOptions = Object.assign({}, dashboardOptions)
 mainOptions.tabBarPosition = 'bottom'
 
-export default (league) => {
+export default (league, setNavigation) => {
   return StackNavigator({
     Home: {
       screen: TabNavigator({
         Dashboard: {
           screen: TabNavigator({
             Matches: {
-              screen: props => <BetsMatchComponent {...props} leagueId={league.leagueId} />,
+              screen: props => <BetsMatchComponent setNavigation={setNavigation} {...props} leagueId={league.leagueId} />,
               navigationOptions: {
                 title: 'Zápasy'
               }

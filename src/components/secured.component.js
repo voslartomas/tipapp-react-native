@@ -11,7 +11,7 @@ export default class SecuredComponent extends Component {
       drawer: undefined
     }
 
-    drawer(this.props.logout).then(drawer => {
+    drawer(this.props.logout, this.props.setNavigation).then(drawer => {
       this.setState({drawer})
     })
   }

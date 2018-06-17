@@ -9,12 +9,12 @@ import BetsSerieComponent from './components/dashboard/bets.serie.component';
 import createProfileNavigation from './profileNavigation'
 import styles from './styles'
 
-export default async (logout) => {
+export default async (logout, setNavigation) => {
   const leagues = await LeagueService.getLeagues()
 
   const items = {}
   leagues.forEach(league => {
-    const main = MainComponent(league)
+    const main = MainComponent(league, setNavigation)
     items[`${league.league.name}`] = {
       screen: main
     }

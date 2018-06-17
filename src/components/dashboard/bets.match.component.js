@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, ScrollView, Dimensions, Button, TextInput, Picker, StyleSheet, StatusBar, RefreshControl } from 'react-native';
+import { View, ScrollView, Dimensions, Button, TextInput, Picker, StyleSheet, StatusBar, RefreshControl, TouchableHighlight } from 'react-native';
 import { Text, Card, CheckBox, Header } from 'react-native-elements';
 import moment from 'moment';
 import codePush, { UpdateState } from 'react-native-code-push';
@@ -27,6 +27,8 @@ export default class BetsMatchComponent extends React.Component {
       history: false,
       currentBet: undefined
     }
+
+    this.props.setNavigation(this.props.navigation)
   }
 
   getPlayers(match) {
@@ -131,6 +133,13 @@ getBetButton(match) {
   return !match.id ? 'Vsadit' : 'Upravit sázku'
 }
 
+pickScorer(option) {
+  this.setState({ pickerVisible: false })
+  const player = option.player
+
+  this.handleBetChange(undefined, undefined, option.player.id, 'scorer', player)
+}
+
   render() {
     return(
       <View style={styles.container}>
@@ -172,7 +181,7 @@ getBetButton(match) {
                 }
               } title={this.getBetButton(match)} />}
 
-              {!this.canBet(match) && match.isEvaluated &&
+              {!this.canBet(match) &&
                 <Text
                 onPress={() => this.props.navigation.navigate('UserBetsMatch', { leagueId: this.props.leagueId, match })}
                 style={styles.normalText}>Body: {match.totalPoints}
@@ -231,22 +240,19 @@ getBetButton(match) {
             visible={this.state.pickerVisible}
             options={this.getPlayers(this.state.currentBet).map(player => {
               return {key: player.id,
-                label: (
-                  <Text style={{fontSize: 14, flex: 1, flexDirection: 'row'}}>
-                    <Text style={this.getStylePlayer(player)}>{player.player.position} {player.player.firstName} {player.player.lastName} {player.leagueTeam.team.shortcut}</Text>
-                    <Text>{"\n"}Z: {player.seasonGames}, G: {player.seasonGoals}, {player.clubName}</Text>
-                  </Text>
-                )
+                player,
+                label: `${player.player.firstName} ${player.player.lastName}`
             }})}
-            onSelect={(value) => {
-                this.setState({ pickerVisible: false })
-                const player = this.state.players.find(player =>   player.id === value)
-
-                this.handleBetChange(undefined, undefined, value, 'scorer', player)
-            }}
+            renderOption={(option) => (
+              <TouchableHighlight onPress={() => this.pickScorer(option)}>
+                <Text style={{padding: 5, fontSize: 14, flex: 1, flexDirection: 'row'}}>
+                  <Text style={this.getStylePlayer(option.player)}>{option.player.player.position} {option.player.player.firstName} {option.player.player.lastName} {option.player.leagueTeam.team.shortcut}</Text>
+                  <Text>{"\n"}Z: {option.player.seasonGames}, G: {option.player.seasonGoals}, {option.player.clubName}</Text>
+                </Text>
+              </TouchableHighlight>
+            )}
             onCancel={(el) => {
                 this.setState({ pickerVisible: false })
-                this.inputRefs.picker = el;
             }}
         />
 
