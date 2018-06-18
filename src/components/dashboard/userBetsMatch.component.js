@@ -47,7 +47,10 @@ export default class UserBetsMatchComponent extends React.Component {
             <View>
               <Text style={Object.assign({}, styles.normalText, { textAlign: 'left' })}>{match.user.user.firstName} {match.user.user.lastName}</Text>
               <Text style={Object.assign({}, styles.smallText, { textAlign: 'right' })}>{match.homeScore}:{match.awayScore}</Text>
-              <Text style={Object.assign({}, styles.smallText, { textAlign: 'right' })}>{match.scorer.player.firstName} {match.scorer.player.lastName}</Text>
+              <Text style={Object.assign({}, styles.smallText, { textAlign: 'right' })}>
+                {match.scorer && match.scorer.player.firstName} {match.scorer && match.scorer.player.lastName}
+                {!match.scorer && <Text>Žádný tip</Text>}
+                </Text>
               <Text style={Object.assign({}, styles.smallText, { textAlign: 'right' })}>Body {match.totalPoints}</Text>
             </View>
           ))}

@@ -140,6 +140,14 @@ pickScorer(option) {
   this.handleBetChange(undefined, undefined, option.player.id, 'scorer', player)
 }
 
+filter(matches) {
+  if (!this.state.history) {
+    return matches.slice(0, 10)
+  }
+
+  return matches
+}
+
   render() {
     return(
       <View style={styles.container}>
@@ -163,7 +171,7 @@ pickScorer(option) {
 
           {this.state.matches.length === 0 && !this.state.loading && <Text style={styles.normalText}>Žádné zápasy</Text>}
 
-          {this.state.matches.slice(0, 10).map(match => (
+          {this.filter(this.state.matches).map(match => (
             <Card
               titleStyle={styles.subHeader}
               dividerStyle={{ backgroundColor: styles.secondary }}
