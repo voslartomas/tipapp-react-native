@@ -43,7 +43,7 @@ export default class ProfileComponent extends Component {
   getPluralizedHours() {
     const h = this.state.user.notifyHours
 
-    return h > 4 ? 'hodin' : h === 1 ? 'hodina' : 'hodiny'
+    return h > 4 ? 'hodin' : h === 1 ? 'hodinu' : 'hodiny'
   }
 
   render() {

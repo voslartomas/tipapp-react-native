@@ -40,7 +40,7 @@ export default createNavigation = (isLoggedIn, login, logout) =>  {
       navigationOptions: ({ navigation, screenProps }) => ({
         title: 'NEYMAR',
         headerTintColor: 'white',
-        headerLeft: <Text style={{paddingLeft: 10}} onPress={() => drawerNavigation.toggleDrawer()}><Icon name="bars" size={30} color="#fff" /></Text>,
+        headerLeft: <Text style={{paddingLeft: 10}} onPress={() => drawerNavigation.toggleDrawer()}><Icon name="bars" size={30} color={styles.secondary} /></Text>,
         headerStyle: styles.headerBar,
         styles: {
           statusBarTextColorScheme: 'dark',

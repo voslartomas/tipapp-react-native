@@ -15,7 +15,7 @@ class Api {
     const token = await AsyncStorage.getItem('token')
     this.request = axios.create({
       baseURL: this.baseUrl,
-      timeout: 2000,
+      timeout: 8000,
       headers: {'Authorization': `Bearer ${token}`}
     });
   }
