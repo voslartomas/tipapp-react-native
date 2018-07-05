@@ -1,11 +1,12 @@
 import { Platform } from 'react-native';
 
 const primaryColor = '#202020';
-const secondaryColor = '#f3d827';
+const secondaryColor = '#ffc71c';
 
 export default {
   primary: primaryColor,
   secondary: secondaryColor,
+  buttonColor: '#008CFF',
   danger: '#ff2233',
   notice: '#3999CC',
   container: {
@@ -49,11 +50,11 @@ export default {
     borderBottomColor: '#f3d827'
   },
   button: {
-    color: 'black',
+    color: '#008CFF',
     textAlign: 'center',
-    backgroundColor: 'white',
-    padding: 10,
-    margin: 15,
+    backgroundColor: primaryColor,
+    padding: 5,
+    margin: 1,
   },
   buttonLink: {
     backgroundColor: primaryColor,

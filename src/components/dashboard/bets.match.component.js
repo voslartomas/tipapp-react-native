@@ -94,10 +94,11 @@ export default class BetsMatchComponent extends React.Component {
     match.loading = true
     match.selectedScorer = undefined
     this.setState({})
-
+    console.log(match)
     await UserBetsMatchService.put(this.props.leagueId, {matchId: match.matchId1,
       homeScore: match.homeScore || 0,
       awayScore: match.awayScore || 0,
+      overtime: match.overtime || false,
       scorerId: match.scorerId
     }, id)
 
@@ -225,11 +226,11 @@ filter(matches) {
                     </View>
                   </View>
 
-                  {/*<CheckBox
-                    title='Remíza'
+                  <CheckBox
+                    title='Prodloužení'
                     onPress={value => this.handleBetChange(match, !match.overtime, undefined, 'overtime')}
                     checked={match.overtime}
-                  />*/}
+                  />
 
                   <Text style={styles.normalText}>{match.selectedScorer && match.selectedScorer}</Text>
                   <Button title="Vybrat střelce" onPress={() => {
