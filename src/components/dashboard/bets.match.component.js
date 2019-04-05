@@ -127,7 +127,22 @@ export default class BetsMatchComponent extends React.Component {
  }
 
 getStylePlayer(player) {
-  return player.bestScorer ? {color: 'white', backgroundColor: 'black', fontSize: 20} : {fontSize: 20}
+  let style = {fontSize: 20}
+
+  if (player.bestScorer) {
+    style = {color: 'white', backgroundColor: 'black', fontSize: 20}
+  }
+  if (player.secondBestScorer) {
+    style = {color: 'white', backgroundColor: 'orange', fontSize: 20}
+  }
+  if (player.thirdBestScorer) {
+    style = {color: 'white', backgroundColor: 'gray', fontSize: 20}
+  }
+  if (player.fourthBestScorer) {
+    style = {color: 'white', backgroundColor: 'green', fontSize: 20}
+  }
+  
+  return style
 }
 
 getBetButton(match) {
@@ -139,6 +154,23 @@ pickScorer(option) {
   const player = option.player
 
   this.handleBetChange(undefined, undefined, option.player.id, 'scorer', player)
+}
+
+addStarsForBestScorers(player) {
+  let stars = ''
+  if (player.bestScorer) {
+    return stars += '*'
+  }
+  if (player.secondBestScorer) {
+    return stars += '**'
+  }
+  if (player.thirdBestScorer) {
+    return stars += '***'
+  }
+  if (player.fourthBestScorer) {
+    return stars += '****'
+  }
+  return stars
 }
 
 filter(matches) {
@@ -255,7 +287,8 @@ filter(matches) {
             renderOption={(option) => (
               <TouchableHighlight onPress={() => this.pickScorer(option)}>
                 <Text style={{padding: 5, fontSize: 14, flex: 1, flexDirection: 'row'}}>
-                  <Text style={this.getStylePlayer(option.player)}>{option.player.player.position} {option.player.player.firstName} {option.player.player.lastName} {option.player.leagueTeam.team.shortcut}</Text>
+                  <Text style={this.getStylePlayer(option.player)}>{option.player.player.position} {option.player.player.firstName} 
+                    {option.player.player.lastName + this.addStarsForBestScorers(option.player.player)} {option.player.leagueTeam.team.shortcut}</Text>
                   <Text>{"\n"}Z: {option.player.seasonGames}, G: {option.player.seasonGoals}, {option.player.clubName}</Text>
                 </Text>
               </TouchableHighlight>
