@@ -5,6 +5,8 @@ import { Navigation } from 'react-navigation';
 import moment from 'moment';
 import AppCenter from 'appcenter';
 import UserService from './services/user.service'
+import Loader from './components/shared/loader.component'
+import styles from './styles'
 import 'moment/locale/cs'
 
 moment.locale('cs')
@@ -15,7 +17,8 @@ export default class App extends React.Component {
 
     this.state = {
       action: undefined,
-      isLoggedIn: false
+      isLoggedIn: false,
+      loading: true
     }
   }
 
@@ -41,15 +44,18 @@ export default class App extends React.Component {
         UserService.update({ pushId }, currentUser.id)
       }
 
-      console.log(pushId, currentUser)
       this.setState({
-        isLoggedIn: token && token.length > 0
+        isLoggedIn: token && token.length > 0,
+        loading: false
       })
-    })
+    }).catch(err => this.setState({ loading: false }))
   }
 
   render() {
-    const {isLoggedIn} = this.state
+    const { isLoggedIn, loading } = this.state
+
+    if (loading) return <View style={styles.container}><Loader /></View>
+
     const Layout = createNavigation(isLoggedIn, () => {this.login()}, () => {this.logout()})
 
     console.disableYellowBox = true;
