@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, ScrollView, Dimensions, Button, TextInput, Picker, StyleSheet, StatusBar, RefreshControl, TouchableHighlight } from 'react-native';
+import { View, ScrollView, Dimensions, Button, TextInput, Picker, StyleSheet, Platform, StatusBar, RefreshControl, TouchableHighlight } from 'react-native';
 import { Text, Card, CheckBox, Header } from 'react-native-elements';
 import moment from 'moment';
 import codePush, { UpdateState } from 'react-native-code-push';
@@ -141,7 +141,7 @@ getStylePlayer(player) {
   if (player.fourthBestScorer) {
     style = {color: 'white', backgroundColor: 'green', fontSize: 20}
   }
-  
+
   return style
 }
 
@@ -193,7 +193,7 @@ filter(matches) {
 
         {this.state.loading && <Loader />}
 
-        <ScrollView keyboardShouldPersistTaps="always" keyboardDismissMode="on-drag"
+        <ScrollView keyboardShouldPersistTaps="always" keyboardDismissMode={Platform.OS === 'android' ? 'none' : 'on-drag'}
           refreshControl={
             <RefreshControl
               refreshing={this.state.refreshing}
@@ -287,7 +287,7 @@ filter(matches) {
             renderOption={(option) => (
               <TouchableHighlight onPress={() => this.pickScorer(option)}>
                 <Text style={{padding: 5, fontSize: 14, flex: 1, flexDirection: 'row'}}>
-                  <Text style={this.getStylePlayer(option.player)}>{option.player.player.position} {option.player.player.firstName} 
+                  <Text style={this.getStylePlayer(option.player)}>{option.player.player.position} {option.player.player.firstName}
                     {option.player.player.lastName + this.addStarsForBestScorers(option.player.player)} {option.player.leagueTeam.team.shortcut}</Text>
                   <Text>{"\n"}Z: {option.player.seasonGames}, G: {option.player.seasonGoals}, {option.player.clubName}</Text>
                 </Text>
