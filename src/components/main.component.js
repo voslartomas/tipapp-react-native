@@ -36,12 +36,12 @@ export default (league, setNavigation) => {
                 title: 'Zápasy'
               }
             },
-            /*Series: {
+            Series: {
               screen: props => <BetsSerieComponent leagueId={league.leagueId}/>,
               navigationOptions: {
                 title: 'Série'
               }
-            },*/
+            },
             Singles: {
               screen: props => <BetsSpecialComponent {...props} leagueId={league.leagueId}/>,
               navigationOptions: {

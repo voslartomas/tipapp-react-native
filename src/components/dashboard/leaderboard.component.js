@@ -104,7 +104,7 @@ export default class LeaderboardComponent extends React.Component {
               <Text style={Object.assign(...this.getPositionStyle(i), {flex: 1, textAlign: 'left'})}>
                 {this.getPlayerName(player)} {this.isBeerPosition(i) && <Icon name="beer" size={20} color="gold" />}
               </Text>
-              <Text style={Object.assign(...this.getPositionStyle(i), {textAlign: 'right'})}>{player.totalPoints}</Text>
+              <Text style={Object.assign(...this.getPositionStyle(i), {textAlign: 'right', paddingRight: 10})}>{player.totalPoints}</Text>
             </View>
           ))}
         </ScrollView>
