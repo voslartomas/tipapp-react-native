@@ -75,9 +75,7 @@ export default class BetsSerieComponent extends React.Component {
               containerStyle={styles.container}
               key={bet.id}
               title={bet.homeTeam + " " + (bet.serieHomeScore || '') + ":" + (bet.serieAwayScore || '') + " " + bet.awayTeam}>
-
               {this.betPlaced(bet) && <Text style={styles.normalText}>Tip: {bet.homeTeamScore}:{bet.awayTeamScore}</Text>}
-
               <View style={{flexDirection: 'row'}}>
                 <View style={{flex: 1}}>
                   <TextInput
