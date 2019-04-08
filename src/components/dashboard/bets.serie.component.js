@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { View, ScrollView, Dimensions, Button, TextInput, Picker, StyleSheet } from 'react-native';
+import { View, ScrollView, Dimensions, Button, TextInput, Picker, StyleSheet, RefreshControl } from 'react-native';
 import { Text, Card } from 'react-native-elements';
 import Loader from '../shared/loader.component'
 import UserBetsSerieService from '../../services/userBetsSerie.service'
 import styles from '../../styles'
+import moment from 'moment';
 
 export default class BetsSerieComponent extends React.Component {
   constructor(props) {
@@ -35,7 +36,7 @@ export default class BetsSerieComponent extends React.Component {
       leagueSpecialBetSerieId: bet.leagueSpecialBetSerieId
     }, bet.id | 0)
 
-    await this.loadBets()
+  await this.loadBets()
     this.setState({ loading: false })
   }
 
@@ -59,6 +60,14 @@ export default class BetsSerieComponent extends React.Component {
     return false
   }
 
+  _onRefresh() {
+    console.log(this.state.serieBets)
+    this.setState({refreshing: true});
+     this.loadBets().then(() => {
+      this.setState({refreshing: false});
+    });
+  }
+
   render() {
     if (this.props.leagueId !== this.state.leagueId) {
       this.componentDidMount()
@@ -67,7 +76,14 @@ export default class BetsSerieComponent extends React.Component {
     return(
       <View style={styles.container} id="0">
         {this.state.loading && <Loader />}
-        <ScrollView>
+        <ScrollView
+          refreshControl={
+            <RefreshControl
+              refreshing={this.state.refreshing}
+              onRefresh={this._onRefresh.bind(this)}
+            />
+        }
+        >
           {this.state.serieBets.map(bet => (
             <Card
               titleStyle={styles.subHeader}
@@ -75,6 +91,7 @@ export default class BetsSerieComponent extends React.Component {
               containerStyle={styles.container}
               key={bet.id}
               title={bet.homeTeam + " " + (bet.serieHomeScore || '') + ":" + (bet.serieAwayScore || '') + " " + bet.awayTeam}>
+              <Text style={styles.normalText}>{moment(new Date(bet.dateTime)).calendar()}</Text>
               {this.betPlaced(bet) && <Text style={styles.normalText}>Tip: {bet.homeTeamScore}:{bet.awayTeamScore}</Text>}
               <View style={{flexDirection: 'row'}}>
                 <View style={{flex: 1}}>
