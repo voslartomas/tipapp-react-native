@@ -159,16 +159,16 @@ pickScorer(option) {
 addStarsForBestScorers(player) {
   let stars = ''
   if (player.bestScorer) {
-    return stars += '*'
+    return stars += ' *'
   }
   if (player.secondBestScorer) {
-    return stars += '**'
+    return stars += ' **'
   }
   if (player.thirdBestScorer) {
-    return stars += '***'
+    return stars += ' ***'
   }
   if (player.fourthBestScorer) {
-    return stars += '****'
+    return stars += ' ****'
   }
   return stars
 }
@@ -288,7 +288,7 @@ filter(matches) {
               <TouchableHighlight onPress={() => this.pickScorer(option)}>
                 <Text style={{padding: 5, fontSize: 14, flex: 1, flexDirection: 'row'}}>
                   <Text style={this.getStylePlayer(option.player)}>{option.player.player.position} {option.player.player.firstName}
-                    {option.player.player.lastName + this.addStarsForBestScorers(option.player.player)} {option.player.leagueTeam.team.shortcut}</Text>
+                    {option.player.player.lastName + this.addStarsForBestScorers(option.player)} {option.player.leagueTeam.team.shortcut}</Text>
                   <Text>{"\n"}Z: {option.player.seasonGames}, G: {option.player.seasonGoals}, {option.player.clubName}</Text>
                 </Text>
               </TouchableHighlight>
