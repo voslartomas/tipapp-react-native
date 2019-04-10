@@ -88,9 +88,9 @@ export default class BetsSerieComponent extends React.Component {
               containerStyle={styles.container}
               key={bet.leagueSpecialBetSerieId}
               title={bet.homeTeam + " " + (bet.serieHomeScore || '') + ":" + (bet.serieAwayScore || '') + " " + bet.awayTeam}>
-              <Text style={styles.normalText}>{moment(new Date(bet.endDate)).calendar()}</Text>
+              {(new Date().getTime() < new Date(bet.endDate).getTime()) && <Text style={styles.normalText}>{moment(new Date(bet.endDate)).calendar()}</Text>}
               {this.betPlaced(bet) && <Text style={styles.normalText}>Tip: {bet.homeTeamScore}:{bet.awayTeamScore}</Text>}
-              <View style={{flexDirection: 'row'}}>
+              {(new Date().getTime() < new Date(bet.endDate).getTime()) && <View style={{flexDirection: 'row'}}>
                 <View style={{flex: 1}}>
                   <TextInput
                     style={[styles.input, {justifyContent: 'flex-start'}]}
@@ -112,8 +112,8 @@ export default class BetsSerieComponent extends React.Component {
                     max="4"
                     onChangeText={val => this.handleBetChange(bet, val, 'away')} />
                 </View>
-              </View>
-              <Button onPress={() => this.submitSerieBet(bet)} title="Save bet"/>
+              </View>}
+              {(new Date().getTime() < new Date(bet.endDate).getTime()) && <Button onPress={() => this.submitSerieBet(bet)} title="Save bet"/>}
             </Card>
           ))}
         </ScrollView>
