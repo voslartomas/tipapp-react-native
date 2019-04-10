@@ -1,10 +1,11 @@
+import { Button, Dimensions, Picker, RefreshControl, ScrollView, StyleSheet, TextInput, View } from 'react-native';
+import { Card, Text } from 'react-native-elements';
 import React, { Component } from 'react';
-import { View, ScrollView, Dimensions, Button, TextInput, Picker, StyleSheet, RefreshControl } from 'react-native';
-import { Text, Card } from 'react-native-elements';
+
 import Loader from '../shared/loader.component'
 import UserBetsSerieService from '../../services/userBetsSerie.service'
-import styles from '../../styles'
 import moment from 'moment';
+import styles from '../../styles'
 
 export default class BetsSerieComponent extends React.Component {
   constructor(props) {
@@ -25,7 +26,7 @@ export default class BetsSerieComponent extends React.Component {
   async loadBets() {
     const bets = await UserBetsSerieService.getAll(this.props.leagueId)
 
-    this.setState({ serieBets: bets, leagueId: this.props.leagueId, loading: false })
+    this.setState({ serieBets: bets, leagueId: this.props.leagueId, loading: false, refreshing: false })
   }
 
   async submitSerieBet(bet) {
@@ -36,8 +37,7 @@ export default class BetsSerieComponent extends React.Component {
       leagueSpecialBetSerieId: bet.leagueSpecialBetSerieId
     }, bet.id | 0)
 
-  await this.loadBets()
-    this.setState({ loading: false })
+    await this.loadBets()
   }
 
   async handleBetChange(bet, value, eventType) {
@@ -61,22 +61,19 @@ export default class BetsSerieComponent extends React.Component {
   }
 
   _onRefresh() {
-    console.log(this.state.serieBets)
     this.setState({refreshing: true});
-     this.loadBets().then(() => {
-      this.setState({refreshing: false});
-    });
+    this.loadBets()
   }
 
   render() {
     if (this.props.leagueId !== this.state.leagueId) {
-      this.componentDidMount()
+      // this.componentDidMount()
     }
 
     return(
       <View style={styles.container} id="0">
         {this.state.loading && <Loader />}
-        <ScrollView
+        <ScrollView keyboardShouldPersistTaps="always" keyboardDismissMode={Platform.OS === 'android' ? 'none' : 'on-drag'}
           refreshControl={
             <RefreshControl
               refreshing={this.state.refreshing}
@@ -89,9 +86,9 @@ export default class BetsSerieComponent extends React.Component {
               titleStyle={styles.subHeader}
               dividerStyle={{ backgroundColor: styles.secondary }}
               containerStyle={styles.container}
-              key={bet.id}
+              key={bet.leagueSpecialBetSerieId}
               title={bet.homeTeam + " " + (bet.serieHomeScore || '') + ":" + (bet.serieAwayScore || '') + " " + bet.awayTeam}>
-              <Text style={styles.normalText}>{moment(new Date(bet.dateTime)).calendar()}</Text>
+              <Text style={styles.normalText}>{moment(new Date(bet.endDate)).calendar()}</Text>
               {this.betPlaced(bet) && <Text style={styles.normalText}>Tip: {bet.homeTeamScore}:{bet.awayTeamScore}</Text>}
               <View style={{flexDirection: 'row'}}>
                 <View style={{flex: 1}}>
