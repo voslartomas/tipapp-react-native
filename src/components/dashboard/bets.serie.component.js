@@ -1,4 +1,4 @@
-import { Button, Dimensions, Picker, RefreshControl, ScrollView, StyleSheet, TextInput, View } from 'react-native';
+import { Button, Dimensions, KeyboardAvoidingView, RefreshControl, ScrollView, Platform, TextInput, View } from 'react-native';
 import { Card, Text } from 'react-native-elements';
 import React, { Component } from 'react';
 
@@ -10,12 +10,12 @@ import styles from '../../styles'
 export default class BetsSerieComponent extends React.Component {
   constructor(props) {
     super(props)
-
     this.state = {
       serieBets: [],
       inputSerieBets: {},
       leagueId: undefined,
-      loading: true
+      loading: true,
+      refreshing: false
     }
   }
 
@@ -25,7 +25,6 @@ export default class BetsSerieComponent extends React.Component {
 
   async loadBets() {
     const bets = await UserBetsSerieService.getAll(this.props.leagueId)
-
     this.setState({ serieBets: bets, leagueId: this.props.leagueId, loading: false, refreshing: false })
   }
 
@@ -66,9 +65,6 @@ export default class BetsSerieComponent extends React.Component {
   }
 
   render() {
-    if (this.props.leagueId !== this.state.leagueId) {
-      // this.componentDidMount()
-    }
 
     return(
       <View style={styles.container} id="0">
@@ -81,15 +77,22 @@ export default class BetsSerieComponent extends React.Component {
             />
         }
         >
+        <KeyboardAvoidingView>
           {this.state.serieBets.map(bet => (
             <Card
               titleStyle={styles.subHeader}
               dividerStyle={{ backgroundColor: styles.secondary }}
               containerStyle={styles.container}
               key={bet.leagueSpecialBetSerieId}
-              title={bet.homeTeam + " " + (bet.serieHomeScore || '') + ":" + (bet.serieAwayScore || '') + " " + bet.awayTeam}>
+              title={bet.homeTeam + " " + (bet.serieHomeScore || '0') + ":" + (bet.serieAwayScore || '0') + " " + bet.awayTeam}>
               {(new Date().getTime() < new Date(bet.endDate).getTime()) && <Text style={styles.normalText}>{moment(new Date(bet.endDate)).calendar()}</Text>}
               {this.betPlaced(bet) && <Text style={styles.normalText}>Tip: {bet.homeTeamScore}:{bet.awayTeamScore}</Text>}
+              {bet.id &&
+                  <Text
+                  style={styles.normalText}
+                  onPress={() => this.props.navigation.navigate('UserBetsSerie', { leagueId: this.props.leagueId, serie: bet })}
+                  >
+                  Body: {bet.totalPoints}</Text>}
               {(new Date().getTime() < new Date(bet.endDate).getTime()) && <View style={{flexDirection: 'row'}}>
                 <View style={{flex: 1}}>
                   <TextInput
@@ -116,6 +119,7 @@ export default class BetsSerieComponent extends React.Component {
               {(new Date().getTime() < new Date(bet.endDate).getTime()) && <Button onPress={() => this.submitSerieBet(bet)} title="Save bet"/>}
             </Card>
           ))}
+          </KeyboardAvoidingView>
         </ScrollView>
       </View>
     );

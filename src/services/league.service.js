@@ -36,4 +36,10 @@ export default class LeagueService {
 
     return response.data
   }
+
+  static async getUserBetsSerie(leagueId, serieId) {
+    const response = await api.get(`api/leagues/${leagueId}/users/bets/serie/${serieId}`)
+    
+    return response.data
+  }
 }

@@ -6,6 +6,7 @@ import BetsSerieComponent from './dashboard/bets.serie.component';
 import BetsSpecialComponent from './dashboard/bets.special.component';
 import UserBetsMatchComponent from './dashboard/userBetsMatch.component'
 import UserBetsSingleComponent from './dashboard/userBetsSingle.component'
+import UserBetsSerieComponent from './dashboard/userBetsSerie.component'
 import styles from '../styles'
 import { TabNavigator, StackNavigator } from 'react-navigation';
 
@@ -37,7 +38,7 @@ export default (league, setNavigation) => {
               }
             },
             Series: {
-              screen: props => <BetsSerieComponent leagueId={league.leagueId}/>,
+              screen: props => <BetsSerieComponent {...props} leagueId={league.leagueId}/>,
               navigationOptions: {
                 title: 'Série'
               }
@@ -64,6 +65,9 @@ export default (league, setNavigation) => {
   },
   UserBetsMatch: {
     screen: props => <UserBetsMatchComponent {...props} />
+  },
+  UserBetsSerie: {
+    screen: props => <UserBetsSerieComponent {...props} />
   },
   UserBetsSingle: {
     screen: props => <UserBetsSingleComponent {...props} />
