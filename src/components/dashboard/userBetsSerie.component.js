@@ -44,9 +44,9 @@ export default class UserBetsSerieComponent extends React.Component {
             return a.totalPoints > b.totalPoints ? -1 : 1
           }).map(match => (
              <View>
-              <Text style={Object.assign({}, styles.normalText, { textAlign: 'left' })}>{match.leagueUser.user.firstName} {match.leagueUser.user.lastName}</Text>
-              <Text style={Object.assign({}, styles.smallText, { textAlign: 'right' })}>{match.homeTeamScore}:{match.awayTeamScore}</Text>
-              <Text style={Object.assign({}, styles.smallText, { textAlign: 'right' })}>Body {match.totalPoints}</Text>
+              <Text style={Object.assign({}, styles.normalText, { textAlign: 'left', paddingLeft: 12 })}>{match.leagueUser.user.firstName} {match.leagueUser.user.lastName}</Text>
+              <Text style={Object.assign({}, styles.smallText, { textAlign: 'right', paddingRight: 12 })}>{match.homeTeamScore}:{match.awayTeamScore}</Text>
+              <Text style={Object.assign({}, styles.smallText, { textAlign: 'right', paddingRight: 12 })}>Body {match.totalPoints}</Text>
             </View>
           ))}
         </ScrollView>

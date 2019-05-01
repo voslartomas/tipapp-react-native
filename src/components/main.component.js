@@ -26,31 +26,38 @@ const mainOptions = Object.assign({}, dashboardOptions)
 mainOptions.tabBarPosition = 'bottom'
 
 export default (league, setNavigation) => {
+
+  const menuOptions = {
+    Matches: {
+      screen: props => <BetsMatchComponent setNavigation={setNavigation} {...props} leagueId={league.leagueId} />,
+      navigationOptions: {
+        title: 'Zápasy'
+      }
+    },
+    Series: {
+      screen: props => <BetsSerieComponent {...props} leagueId={league.leagueId}/>,
+      navigationOptions: {
+        title: 'Série'
+      }
+    },
+    Singles: {
+      screen: props => <BetsSpecialComponent {...props} leagueId={league.leagueId}/>,
+      navigationOptions: {
+        title: 'Speciální'
+      }
+    },
+  }
+
+  const leaguesWithSeries = [7, 8]
+  const menu = leaguesWithSeries.includes(league.leagueId) ? 
+  { Matches: menuOptions.Matches, Series: menuOptions.Series, Singles: menuOptions.Singles } : 
+  { Matches: menuOptions.Matches, Singles: menuOptions.Singles }
+
   return StackNavigator({
     Home: {
       screen: TabNavigator({
         Dashboard: {
-          screen: TabNavigator({
-            Matches: {
-              screen: props => <BetsMatchComponent setNavigation={setNavigation} {...props} leagueId={league.leagueId} />,
-              navigationOptions: {
-                title: 'Zápasy'
-              }
-            },
-            Series: {
-              screen: props => <BetsSerieComponent {...props} leagueId={league.leagueId}/>,
-              navigationOptions: {
-                title: 'Série'
-              }
-            },
-            Singles: {
-              screen: props => <BetsSpecialComponent {...props} leagueId={league.leagueId}/>,
-              navigationOptions: {
-                title: 'Speciální'
-              }
-            },
-        },
-        dashboardOptions),
+          screen: TabNavigator(menu, dashboardOptions),
         navigationOptions: {
           title: 'Tipy'
         }

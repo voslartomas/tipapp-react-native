@@ -16,7 +16,7 @@ export default class UserBetsMatchComponent extends React.Component {
 
   async load() {
     const { leagueId, match } = this.props.navigation.state.params
-    const matches = await LeagueService.getUserBetsMatch(leagueId, match.matchId)
+    const matches = await LeagueService.getUserBetsMatch(leagueId, match.matchId1)
 
     this.setState({
       matches,
@@ -45,13 +45,13 @@ export default class UserBetsMatchComponent extends React.Component {
             return a.totalPoints > b.totalPoints ? -1 : 1
           }).map(match => (
             <View>
-              <Text style={Object.assign({}, styles.normalText, { textAlign: 'left' })}>{match.user.user.firstName} {match.user.user.lastName}</Text>
-              <Text style={Object.assign({}, styles.smallText, { textAlign: 'right' })}>{match.homeScore}:{match.awayScore}{match.overtime ? 'P' : ''}</Text>
-              <Text style={Object.assign({}, styles.smallText, { textAlign: 'right' })}>
+              <Text style={Object.assign({}, styles.normalText, { textAlign: 'left', paddingLeft: 12 })}>{match.user.user.firstName} {match.user.user.lastName}</Text>
+              <Text style={Object.assign({}, styles.smallText, { textAlign: 'right', paddingRight: 12 })}>{match.homeScore}:{match.awayScore}{match.overtime ? 'P' : ''}</Text>
+              <Text style={Object.assign({}, styles.smallText, { textAlign: 'right', paddingRight: 12 })}>
                 {match.scorer && match.scorer.player.firstName} {match.scorer && match.scorer.player.lastName}
                 {!match.scorer && <Text>Žádný tip</Text>}
                 </Text>
-              <Text style={Object.assign({}, styles.smallText, { textAlign: 'right' })}>Body {match.totalPoints}</Text>
+              <Text style={Object.assign({}, styles.smallText, { textAlign: 'right', paddingRight: 12 })}>Body: {match.totalPoints}</Text>
             </View>
           ))}
         </ScrollView>
