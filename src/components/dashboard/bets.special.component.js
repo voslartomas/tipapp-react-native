@@ -1,16 +1,17 @@
+import { Button, Dimensions, KeyboardAvoidingView, Picker, RefreshControl, ScrollView, StyleSheet, TextInput, View } from 'react-native';
+import { Card, Divider, Text } from 'react-native-elements';
 import React, { Component } from 'react';
-import { View, ScrollView, Dimensions, Button, TextInput, Picker, StyleSheet, KeyboardAvoidingView, RefreshControl } from 'react-native';
-import { Text, Card, Divider } from 'react-native-elements';
-import moment from 'moment';
 import codePush, { UpdateState } from 'react-native-code-push';
-import Loader from '../shared/loader.component'
+
 import LeaderboardComponent from './leaderboard.component';
-import { TabNavigator } from 'react-navigation';
-import UserBetsSpecialService from '../../services/userBetsSpecial.service';
-import PlayerService from '../../services/player.service';
-import TeamService from '../../services/team.service';
-import styles from '../../styles';
+import Loader from '../shared/loader.component'
 import ModalFilterPicker from 'react-native-modal-filter-picker'
+import PlayerService from '../../services/player.service';
+import { TabNavigator } from 'react-navigation';
+import TeamService from '../../services/team.service';
+import UserBetsSpecialService from '../../services/userBetsSpecial.service';
+import moment from 'moment';
+import styles from '../../styles';
 
 export default class BetsMatchComponent extends React.Component {
   constructor(props) {
@@ -178,14 +179,15 @@ export default class BetsMatchComponent extends React.Component {
                 title={this.getHeader(match)}>
                 <Text style={styles.normalText}>{moment(new Date(match.endDate)).calendar()}</Text>
                 {(match.id || this.getBetTitle(match)) &&
-                  <Text style={styles.normalText}>Tip: {this.getBetTitle(match)}</Text>}
-                <Divider style={{ 
-                  backgroundColor: styles.secondary, marginTop: 10, 
-                  marginBottom: 10, width: "60%", 
-                  position: 'relative', left: '20%' 
-                  }} 
+                <Text style={styles.normalText}>Tip: {this.getBetTitle(match)}</Text>}
+                <Divider style={{
+                  backgroundColor: styles.secondary, marginTop: 10,
+                  marginBottom: 10, width: "60%",
+                  position: 'relative', left: '20%'
+                  }}
                 />
-                {match.id &&
+
+                {match.id && (new Date().getTime() > new Date(match.endDate).getTime()) &&
                   <Text
                   style={styles.points}
                   onPress={() => this.props.navigation.navigate('UserBetsSingle', { leagueId: this.props.leagueId, single: match })}>
