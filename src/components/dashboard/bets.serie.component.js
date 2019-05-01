@@ -87,11 +87,7 @@ export default class BetsSerieComponent extends React.Component {
               title={bet.homeTeam + " " + (bet.serieHomeScore || '0') + ":" + (bet.serieAwayScore || '0') + " " + bet.awayTeam}>
               {(new Date().getTime() < new Date(bet.endDate).getTime()) && <Text style={styles.normalText}>{moment(new Date(bet.endDate)).calendar()}</Text>}
               {this.betPlaced(bet) && <Text style={styles.normalText}>Tip: {bet.homeTeamScore}:{bet.awayTeamScore}</Text>}
-              <Divider style={{ 
-                backgroundColor: styles.secondary, marginTop: 10, 
-                marginBottom: 10, width: "60%", 
-                position: 'relative', left: '20%' 
-                }} 
+              <Divider style={styles.divider}
               />
               {bet.id &&
                   <Text

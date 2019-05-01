@@ -217,11 +217,7 @@ filter(matches) {
                 <Text style={styles.normalText}>
                 Tip: {match.homeScore}:{match.awayScore}{match.overtime ? 'P' : ''}, {match.scorer}
                 </Text>}
-              <Divider style={{ 
-                backgroundColor: styles.secondary, marginTop: 10, 
-                marginBottom: 10, width: "60%", 
-                position: 'relative', left: '20%' 
-                }} 
+                <Divider style={styles.divider}
               />
               {this.canBet(match) && !match.betting && <Button onPress={() => {
                 match.betting = true

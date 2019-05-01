@@ -179,11 +179,7 @@ export default class BetsMatchComponent extends React.Component {
                 <Text style={styles.normalText}>{moment(new Date(match.endDate)).calendar()}</Text>
                 {(match.id || this.getBetTitle(match)) &&
                   <Text style={styles.normalText}>Tip: {this.getBetTitle(match)}</Text>}
-                <Divider style={{ 
-                  backgroundColor: styles.secondary, marginTop: 10, 
-                  marginBottom: 10, width: "60%", 
-                  position: 'relative', left: '20%' 
-                  }} 
+                  <Divider style={styles.divider}
                 />
                 {match.id &&
                   <Text

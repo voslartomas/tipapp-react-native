@@ -66,4 +66,9 @@ export default {
   normalText: { fontSize: 18, color: 'white', textAlign: 'center', fontWeight: 'bold' },
   smallText: { fontSize: 14, color: 'white', textAlign: 'center', fontWeight: 'bold' },
   points: { fontSize: 18, color: 'silver', textAlign: 'center', fontWeight: 'bold' },
+  divider: { 
+    backgroundColor: secondaryColor, marginTop: 10, 
+    marginBottom: 10, width: "60%", 
+    position: 'relative', left: '20%' 
+  },
 };
