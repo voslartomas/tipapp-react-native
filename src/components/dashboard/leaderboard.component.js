@@ -100,8 +100,8 @@ export default class LeaderboardComponent extends React.Component {
         >
           {this.state.leaderboard.map((player, i) => (
             <View style={{flex: 1, flexDirection: 'row', alignItems: 'center', borderBottomColor: 'grey', borderBottomWidth: 1}}>
-              <Text style={Object.assign(...this.getPositionStyle(i), {width: 30, textAlign: 'left'})}>{this.getPosition(player, i)}</Text>
-              <Text style={Object.assign(...this.getPositionStyle(i), {flex: 1, textAlign: 'left'})}>
+              <Text style={Object.assign(...this.getPositionStyle(i), {width: 50, textAlign: 'left', paddingLeft: 12})}>{this.getPosition(player, i)}</Text>
+              <Text style={Object.assign(...this.getPositionStyle(i), {flex: 1, textAlign: 'left', paddingLeft: 10})}>
                 {this.getPlayerName(player)} {this.isBeerPosition(i) && <Icon name="beer" size={20} color="gold" />}
               </Text>
               <Text style={Object.assign(...this.getPositionStyle(i), {textAlign: 'right', paddingRight: 10})}>{player.totalPoints}</Text>

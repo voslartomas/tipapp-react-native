@@ -96,7 +96,7 @@ export default class BetsSerieComponent extends React.Component {
               {(new Date().getTime() < new Date(bet.endDate).getTime()) && <View style={{flexDirection: 'row'}}>
                 <View style={{flex: 1}}>
                   <TextInput
-                    style={[styles.input, {justifyContent: 'flex-start'}]}
+                    style={[styles.input, {justifyContent: 'flex-end', width: '50%', marginLeft: 'auto'}]}
                     value={bet.homeTeamScore || 0}
                     type="number"
                     name="homeScore"
@@ -107,7 +107,7 @@ export default class BetsSerieComponent extends React.Component {
                 <Text style={{color: 'white', fontWeight: 'bold', marginTop: 20, fontSize: 15}}>:</Text>
                 <View style={{flex: 1}}>
                   <TextInput
-                    style={[styles.input, {justifyContent: 'flex-end'}]}
+                    style={[styles.input, {justifyContent: 'flex-start', width: '50%'}]}
                     value={bet.awayTeamScore || 0}
                     type="number"
                     name="awayScore"

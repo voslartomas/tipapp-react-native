@@ -214,7 +214,7 @@ filter(matches) {
               <Text style={styles.normalText}>{moment(new Date(match.matchDateTime)).calendar()}</Text>
               {match.id &&
                 <Text style={styles.normalText}>
-                Tip: {match.homeScore}:{match.awayScore}{match.overtime ? 'P' : ''}, {match.scorer}
+                Tip: {match.homeScore}:{match.awayScore}{match.overtime ? 'P' : ''}{match.scorer && `, ${match.scorer}`}
                 </Text>}
               {this.canBet(match) && !match.betting && <Button onPress={() => {
                 match.betting = true
@@ -233,7 +233,7 @@ filter(matches) {
                   <View style={{flexDirection: 'row'}}>
                     <View style={{flex: 1}}>
                       <TextInput
-                        style={[styles.input, {justifyContent: 'flex-start'}]}
+                        style={[styles.input, {justifyContent: 'flex-end', width: '50%', marginLeft: 'auto'}]}
                         value={match.homeScore}
                         returnKeyType="done"
                         onSubmitEditing={() => { this.inputRefs[`${match.id1}`].focus(); }}
@@ -246,7 +246,7 @@ filter(matches) {
                     <Text style={{color: 'white', fontWeight: 'bold', marginTop: 20, fontSize: 15}}>:</Text>
                     <View style={{flex: 1}}>
                       <TextInput
-                        style={[styles.input, {justifyContent: 'flex-end'}]}
+                        style={[styles.input, {justifyContent: 'flex-start', width: '50%'}]}
                         value={match.awayScore}
                         ref={(input) => { this.inputRefs[`${match.id1}`] = input }}
                         keyboardAppearance="dark"
@@ -263,12 +263,14 @@ filter(matches) {
                     onPress={value => this.handleBetChange(match, !match.overtime, undefined, 'overtime')}
                     checked={match.overtime}
                   />
-
-                  <Text style={styles.normalText}>{match.selectedScorer && match.selectedScorer}</Text>
-                  <Button title="Vybrat střelce" onPress={() => {
-                    this.setState({ pickerVisible: true, currentBet: match })
-                  }} />
-
+                  {(this.props.leagueId !== 9) &&
+                    <View style={{flex: 1, paddingBottom: 8, justifyContent: 'center', alignItems: 'center' }}>
+                      <Text style={styles.normalText}>{match.selectedScorer && match.selectedScorer}</Text>
+                      <Button color={styles.secondary} title={match.selectedScorer ? "Vybrat střelce" : "Upravit střelce"} onPress={() => {
+                        this.setState({ pickerVisible: true, currentBet: match })
+                      }} />
+                    </View>
+                  }
                   {!match.loading && <Button title="Uložit" onPress={() => this.saveBet(match)}>Uložit sázku</Button>}
                   {match.loading && <Loader />}
                 </View>
