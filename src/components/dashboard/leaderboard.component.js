@@ -62,7 +62,7 @@ export default class LeaderboardComponent extends React.Component {
  }
 
  isBeerPosition(i) {
-  return i > this.state.leaderboard.length-3
+  return i > this.state.leaderboard.length-(this.props.leagueId === 9 ? 2 : 3)
  }
 
  getPositionStyle(i) {
