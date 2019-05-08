@@ -80,8 +80,12 @@ export default class LeaderboardComponent extends React.Component {
     positionStyles.push({color: 'silver'})
    }
 
-   if (i >= 2 && i < 4) {
-    positionStyles.push({color: 'rgb(205, 127, 50)'})
+   if (i === 2) {
+    positionStyles.push({color: 'grey'})
+   }
+
+   if (i === 3) {
+    positionStyles.push({color: 'green'})
    }
 
    return positionStyles

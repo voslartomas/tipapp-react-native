@@ -56,9 +56,9 @@ export default class UserBetsSingleComponent extends React.Component {
             return a.totalPoints > b.totalPoints ? -1 : 1
           }).map(single => (
             <View>
-              <Text style={Object.assign({}, styles.normalText, { textAlign: 'left' })}>{single.leagueUser.user.firstName} {single.leagueUser.user.lastName}</Text>
-              <Text style={Object.assign({}, styles.smallText, { textAlign: 'right' })}>{this.getBet(single)}</Text>
-              <Text style={Object.assign({}, styles.smallText, { textAlign: 'right' })}>Body {single.totalPoints}</Text>
+              <Text style={Object.assign({}, styles.normalText, { textAlign: 'left', paddingLeft: 12 })}>{single.leagueUser.user.firstName} {single.leagueUser.user.lastName}</Text>
+              <Text style={Object.assign({}, styles.smallText, { textAlign: 'right', paddingRight: 12 })}>{this.getBet(single)}</Text>
+              <Text style={Object.assign({}, styles.smallText, { textAlign: 'right', paddingRight: 12 })}>Body {single.totalPoints}</Text>
             </View>
           ))}
         </ScrollView>

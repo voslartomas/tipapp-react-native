@@ -1,5 +1,5 @@
-import { Button, Dimensions, KeyboardAvoidingView, RefreshControl, ScrollView, Platform, TextInput, View } from 'react-native';
-import { Card, Text } from 'react-native-elements';
+import { Button, Dimensions, KeyboardAvoidingView, Platform, RefreshControl, ScrollView, TextInput, View } from 'react-native';
+import { Card, Divider, Text } from 'react-native-elements';
 import React, { Component } from 'react';
 
 import Loader from '../shared/loader.component'
@@ -87,9 +87,15 @@ export default class BetsSerieComponent extends React.Component {
               title={bet.homeTeam + " " + (bet.serieHomeScore || '0') + ":" + (bet.serieAwayScore || '0') + " " + bet.awayTeam}>
               {(new Date().getTime() < new Date(bet.endDate).getTime()) && <Text style={styles.normalText}>{moment(new Date(bet.endDate)).calendar()}</Text>}
               {this.betPlaced(bet) && <Text style={styles.normalText}>Tip: {bet.homeTeamScore}:{bet.awayTeamScore}</Text>}
-              {bet.id &&
+              <Divider style={{
+                backgroundColor: styles.secondary, marginTop: 10,
+                marginBottom: 10, width: "60%",
+                position: 'relative', left: '20%'
+                }}
+              />
+              {bet.id && (new Date().getTime() > new Date(bet.endDate).getTime()) &&
                   <Text
-                  style={styles.normalText}
+                  style={styles.points}
                   onPress={() => this.props.navigation.navigate('UserBetsSerie', { leagueId: this.props.leagueId, serie: bet })}
                   >
                   Body: {bet.totalPoints}</Text>}

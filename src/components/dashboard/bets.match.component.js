@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, ScrollView, Dimensions, Button, TextInput, Picker, StyleSheet, Platform, StatusBar, RefreshControl, TouchableHighlight } from 'react-native';
-import { Text, Card, CheckBox, Header } from 'react-native-elements';
+import { Text, Card, CheckBox, Divider } from 'react-native-elements';
 import moment from 'moment';
 import codePush, { UpdateState } from 'react-native-code-push';
 import Loader from '../shared/loader.component'
@@ -187,8 +187,9 @@ filter(matches) {
         <StatusBar barStyle="light-content"/>
 
         <View style={{padding: 10}}>
-         {this.state.history && <Text style={styles.normalText} onPress={() => this.switchHistory(false)}>Zobrazit nadcházející</Text>}
-         {!this.state.history && <Text style={styles.normalText} onPress={() => this.switchHistory(true)}>Zobrazit historii</Text>}
+          <Text style={Object.assign({}, styles.normalText, {color: '#008CFF'})} onPress={() => this.switchHistory(!this.state.history)}>
+            {this.state.history ? 'Zobrazit nadcházející' : 'Zobrazit historii'}
+          </Text>
         </View>
 
         {this.state.loading && <Loader />}
@@ -216,6 +217,12 @@ filter(matches) {
                 <Text style={styles.normalText}>
                 Tip: {match.homeScore}:{match.awayScore}{match.overtime ? 'P' : ''}{match.scorer && `, ${match.scorer}`}
                 </Text>}
+              <Divider style={{ 
+                backgroundColor: styles.secondary, marginTop: 10, 
+                marginBottom: 10, width: "60%", 
+                position: 'relative', left: '20%' 
+                }} 
+              />
               {this.canBet(match) && !match.betting && <Button onPress={() => {
                 match.betting = true
                 this.setState({matches: this.state.matches})
@@ -225,7 +232,7 @@ filter(matches) {
               {!this.canBet(match) &&
                 <Text
                 onPress={() => this.props.navigation.navigate('UserBetsMatch', { leagueId: this.props.leagueId, match })}
-                style={styles.normalText}>Body: {match.totalPoints}
+                style={styles.points}>Body: {match.totalPoints || '0'}
                 </Text>}
 
               {this.canBet(match) && match.betting &&

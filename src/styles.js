@@ -66,4 +66,5 @@ export default {
   bigHeader: { fontSize: 40, textAlign: 'center', fontWeight: 'bold' },
   normalText: { fontSize: 18, color: 'white', textAlign: 'center', fontWeight: 'bold' },
   smallText: { fontSize: 14, color: 'white', textAlign: 'center', fontWeight: 'bold' },
+  points: { fontSize: 18, color: 'silver', textAlign: 'center', fontWeight: 'bold' },
 };
