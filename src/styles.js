@@ -42,7 +42,8 @@ export default {
     borderColor: secondaryColor,
     borderBottomWidth: 1,
     backgroundColor: primaryColor,
-    color: 'white'
+    color: 'white',
+    textAlign: 'center',
   },
   headerBar: {
     backgroundColor: '#202020',
