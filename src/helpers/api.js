@@ -2,12 +2,12 @@ import { AsyncStorage } from 'react-native'
 import axios from 'axios'
 
 class Api {
-  baseUrl = 'http://52.58.100.173:8001/'
+  baseUrl = 'http://54.93.116.88:8001/'
   request = undefined
 
   constructor() {
     if (process.env.REACT_APP_ENV === 'production') {
-        this.baseUrl = 'http://52.58.100.173:8001/'
+        this.baseUrl = 'http://54.93.116.88:8001/'
     }
   }
 
