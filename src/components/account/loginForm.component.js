@@ -46,7 +46,7 @@ export default class LoginFormComponent extends Component {
       <View style={styles.container}>
         <StatusBar barStyle="light-content"/>
         {this.state.loading && <Loader />}
-        <Text style={styles.logo}>Neymar</Text>
+        <Text style={styles.logo}>TipAPP</Text>
         <Text style={styles.error}>{this.state.error}</Text>
         <TextInput placeholderTextColor='white' required style={styles.input} placeholder="Přihlašovací jméno" onChangeText={(text) => this.setState({ user: {...this.state.user, username: text} })} autoCapitalize="none" autoCorrect={false}/>
         <TextInput placeholderTextColor='white' required style={styles.input} placeholder="Heslo" onChangeText={(text) => this.setState({ user: {...this.state.user, password: text} })} autoCapitalize="none" autoCorrect={false} secureTextEntry={true}/>

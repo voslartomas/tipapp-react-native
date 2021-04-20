@@ -38,7 +38,7 @@ export default createNavigation = (isLoggedIn, login, logout) =>  {
     Home: {
       screen: props => <SecuredComponent {...props} setNavigation={setNavigation} logout={logout} />,
       navigationOptions: ({ navigation, screenProps }) => ({
-        title: 'NEYMAR',
+        title: 'TipAPP',
         headerTintColor: 'white',
         headerLeft: <Text style={{paddingLeft: 10}} onPress={() => drawerNavigation.toggleDrawer()}><Icon name="bars" size={30} color={styles.secondary} /></Text>,
         headerStyle: styles.headerBar,

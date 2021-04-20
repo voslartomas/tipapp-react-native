@@ -1611,7 +1611,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = cz.neymar.neymar;
+				PRODUCT_BUNDLE_IDENTIFIER = cz.TipAPP.TipAPP;
 				PRODUCT_NAME = tipappReactNative;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -1642,7 +1642,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = cz.neymar.neymar;
+				PRODUCT_BUNDLE_IDENTIFIER = cz.TipAPP.TipAPP;
 				PRODUCT_NAME = tipappReactNative;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
